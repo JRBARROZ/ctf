@@ -1,10 +1,14 @@
 const { Server } = require("socket.io");
-const app = require("express")();
+const express = require('express');
+const app = express();
 const { createServer } = require("http");
 const httpServer = createServer(app);
 const io = new Server(httpServer, { cors: "*" });
 
 let players = [];
+
+app.use(express.static(__dirname + '/public'));
+
 app.get("/", (req, res) => {
   console.log(__dirname);
   return res.sendFile(__dirname + "/index.html");
@@ -16,19 +20,13 @@ io.on("connection", (socket) => {
     socket.emit("conn", socket.id);
     if (players.length !== 4) {
       if (players.length % 2 !== 0) {
-        players.push({ player: socket.id, nickname: nickname, team: "blue" });
-        io.emit("newPlayer", {
-          player: socket.id,
-          nickname: nickname,
-          team: "blue",
-        });
+        const newPlayer = { player: socket.id, nickname: nickname, team: "blue", top: 160, left: 540 };
+        players.push(newPlayer);
+        io.emit("newPlayer", newPlayer);
       } else {
-        players.push({ player: socket.id, nickname: nickname, team: "red" });
-        io.emit("newPlayer", {
-          player: socket.id,
-          nickname: nickname,
-          team: "red",
-        });
+        const newPlayer = { player: socket.id, nickname: nickname, team: "blue", top: 160, left: 40 };
+        players.push(newPlayer);
+        io.emit("newPlayer", newPlayer);
       }
       io.emit("players", players);
     }
@@ -43,6 +41,7 @@ io.on("connection", (socket) => {
     io.emit("playerDisc", socket.id);
   });
   socket.on("playerMoving", (playerMoving) => {
+    console.log(playerMoving);
     io.emit("playerMoved", playerMoving);
   });
   socket.on("chatMessage", (message) => {
