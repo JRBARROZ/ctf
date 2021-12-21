@@ -23,7 +23,7 @@ io.on("connection", (socket) => {
         players.push(newPlayer);
         io.emit("newPlayer", newPlayer);
       } else {
-        const newPlayer = { id: socket.id, nickname: nickname, team: "blue", top: 160, left: 40 };
+        const newPlayer = { id: socket.id, nickname: nickname, team: "red", top: 160, left: 40 };
         players.push(newPlayer);
         io.emit("newPlayer", newPlayer);
       }

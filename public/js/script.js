@@ -1,4 +1,4 @@
-const socket = io("http://localhost:3000");
+const socket = io();
 const camp = document.querySelector("#camp");
 const campDimensions = camp.getBoundingClientRect();
 const playersPodium = document.querySelector("#players");
