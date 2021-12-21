@@ -16,43 +16,53 @@ app.get("/", (req, res) => {
 let chatMessages = [];
 io.on("connection", (socket) => {
   socket.on("nickname", (nickname) => {
-    console.log(nickname);
     socket.emit("conn", socket.id);
     if (players.length !== 4) {
       if (players.length % 2 !== 0) {
-        const newPlayer = { player: socket.id, nickname: nickname, team: "blue", top: 160, left: 540 };
+        const newPlayer = { id: socket.id, nickname: nickname, team: "blue", top: 160, left: 540 };
         players.push(newPlayer);
         io.emit("newPlayer", newPlayer);
       } else {
-        const newPlayer = { player: socket.id, nickname: nickname, team: "blue", top: 160, left: 40 };
+        const newPlayer = { id: socket.id, nickname: nickname, team: "blue", top: 160, left: 40 };
         players.push(newPlayer);
         io.emit("newPlayer", newPlayer);
       }
+      io.emit("loadMessages", chatMessages);
       io.emit("players", players);
     }
   });
   socket.on("disconnect", () => {
+    
+    let leftingField = "";
     players = players.filter((item) => {
-      if (item.player !== socket.id) {
+      if (item.id !== socket.id) {
         return item;
+      } else {
+        leftingField = item.nickname;
       }
     });
+    
     console.log(players.length);
+    const messageObject = {
+      message: `O jogador ${leftingField} deixou o campo`,
+      author: "System"
+    }
+    io.emit("newMessage", messageObject);
     io.emit("playerDisc", socket.id);
+    io.emit("players", players);
   });
   socket.on("playerMoving", (playerMoving) => {
-    console.log(playerMoving);
     io.emit("playerMoved", playerMoving);
   });
   socket.on("chatMessage", (message) => {
     const messageObject = {
       message: message,
-      author: players.find((player) => player.player === socket.id)
+      author: players.find((player) => player.id === socket.id)
     }
     chatMessages.push(messageObject);
-    io.emit("newMessage", messageObject)
+    io.emit("newMessage", messageObject);
   });
-  io.emit("loadMessages", chatMessages)
+  io.emit("loadMessages", chatMessages);
 });
 
 httpServer.listen(3000, () => {

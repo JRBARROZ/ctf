@@ -10,7 +10,7 @@ let currentPlayer = "";
 const nickname = prompt("Digite o nome do jogador");
 //movements
 const movement = {
-  player: currentPlayer,
+  id: currentPlayer,
   top: 0,
   left: 0,
   rotate: "",
@@ -36,11 +36,12 @@ if (nickname) {
 socket.on("conn", (id) => {
   sessionStorage.setItem("player", id);
   currentPlayer = id;
-  movement.player = currentPlayer;
+  movement.id = currentPlayer;
 });
 
 socket.on("loadMessages", (messagesToLoad) => {
   const chat = Array.from(document.querySelector("#chatToShow").children);
+  const chatDiv = document.querySelector("#chatToShow");
   if (chat.length === 0) {
     if (messagesToLoad) {
       messagesToLoad.forEach((message) => {
@@ -48,7 +49,7 @@ socket.on("loadMessages", (messagesToLoad) => {
         const p = document.createElement("p");
         const span = document.createElement("span");
         span.innerText = message.message;
-        if (message.author.player === sessionStorage.getItem("player")) {
+        if (message.author.id === sessionStorage.getItem("player")) {
           div.classList.add("my-messsage");
         } else {
           div.classList.add("other-message");
@@ -60,6 +61,7 @@ socket.on("loadMessages", (messagesToLoad) => {
       });
     }
   }
+  chatDiv.scrollTo(0, chatDiv.scrollHeight);
 });
 
 socket.on("players", (players) => {
@@ -71,14 +73,14 @@ socket.on("players", (players) => {
       const li = document.createElement("li");
       activeCounter.innerText = players.length;
       li.innerText = playerComing.nickname + " " + playerComing.team;
-      li.id = playerComing.player;
-      player.id = playerComing.player;
+      li.id = playerComing.id;
+      player.id = playerComing.id;
       player.classList.add(playerComing.team);
       movement.top = playerComing.top;
       movement.left = playerComing.left;
       player.style.left = `${playerComing.left}px`;
       player.style.top = `${playerComing.top}px`;
-      if (playerComing.player === currentPlayer) {
+      if (playerComing.id === currentPlayer) {
         player.classList.add("current_player");
         li.classList.add("current_player");
       }
@@ -89,13 +91,13 @@ socket.on("players", (players) => {
 });
 
 socket.on("newPlayer", (newPlayer) => {
-  if (newPlayer.player != currentPlayer) {
+  if (newPlayer.id != currentPlayer) {
     const player = playerSvg.cloneNode(true);
     player.style.display = "block";
     const li = document.createElement("li");
     li.innerText = newPlayer.nickname + " " + newPlayer.team;
-    li.id = newPlayer.player;
-    player.id = newPlayer.player;
+    li.id = newPlayer.id;
+    player.id = newPlayer.id;
     movement.left = newPlayer.left;
     movement.top = newPlayer.top;
     player.classList.add(newPlayer.team);
@@ -129,24 +131,28 @@ function handleMovement(e) {
   );
   switch (e.keyCode) {
     case 37:
+      if (movement.left - stepDistance < 0) break;
       movement.left -= stepDistance;
       removeRotates(playerMoving);
       playerMoving.classList.add("left");
       movement.rotate = "left";
       break;
     case 38:
+      if (movement.top - stepDistance < 0) break;
       movement.top -= stepDistance;
       removeRotates(playerMoving);
       playerMoving.classList.add("top");
       movement.rotate = "top";
       break;
     case 39:
+      if (movement.left + stepDistance === 680) break;
       movement.left = movement.left + stepDistance;
       removeRotates(playerMoving);
       playerMoving.classList.add("right");
       movement.rotate = "right";
       break;
     case 40:
+      if (movement.top + stepDistance === 320) break;
       movement.top += stepDistance;
       removeRotates(playerMoving);
       playerMoving.classList.add("bottom");
@@ -160,7 +166,7 @@ function handleMovement(e) {
 
 socket.on("playerMoved", (movement) => {
   const playerMoving = Array.from(camp.children).find(
-    (item) => item.id === movement.player
+    (item) => item.id === movement.id
   );
   playerMoving.style.top = movement.top + "px";
   playerMoving.style.left = movement.left + "px";
@@ -178,13 +184,16 @@ socket.on("newMessage", (newMessage) => {
 
   span.innerText = newMessage.message
   p.innerText = newMessage.author.nickname
-  if (newMessage.author.player === sessionStorage.getItem("player")) {
+  if (newMessage.author.id === sessionStorage.getItem("player")) {
     div.classList.add("my-message");
+    div.innerText = newMessage.message;
+  } else if(newMessage.author === "System") {
+    div.classList.add("system-message");
     div.innerText = newMessage.message;
   } else {
     div.classList.add("other-message");
-    div.appendChild(p)
-    div.appendChild(span)
+    div.appendChild(p);
+    div.appendChild(span);
   }
   chat.appendChild(div);
   chat.scrollTo(0, chat.scrollHeight);

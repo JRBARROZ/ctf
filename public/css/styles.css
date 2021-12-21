@@ -38,10 +38,11 @@ body {
   height: 360px;
   position: relative;
   border: 1px solid blueviolet;
+  margin-top: 2rem;
 }
 .player {
   position: absolute;
-  transition: 0.3s ease-in-out;
+  transition: 0.1s ease-in-out;
 }
 .player.right {
   transform: rotate(0deg);
@@ -144,6 +145,14 @@ form {
   gap: 10px;
   overflow-y: auto;
   padding-right: 10px;
+}
+.system-message {
+  padding: 2px;
+  text-align: left;
+  width: 100%;
+  background-color: rgba(196, 156, 48, 0.3);
+  padding: 10px;
+  border-radius: 10px;
 }
 .other-message {
   padding: 2px;
