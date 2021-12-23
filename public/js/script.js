@@ -14,20 +14,14 @@ const movement = {
   id: currentPlayer,
   top: 0,
   left: 0,
-  rotate: "",
+  rotate: 0,
+  direction: ""
 };
 const stepDistance = 20;
 
 function handleClick() {
   const chatMessage = document.querySelector("#message").value;
   socket.emit("chatMessage", chatMessage);
-}
-
-function removeRotates(playerMoving) {
-  playerMoving.classList.remove("top");
-  playerMoving.classList.remove("right");
-  playerMoving.classList.remove("bottom");
-  playerMoving.classList.remove("left");
 }
 
 if (nickname) {
@@ -79,6 +73,8 @@ socket.on("players", (players) => {
       player.classList.add(playerComing.team);
       movement.top = playerComing.top;
       movement.left = playerComing.left;
+      movement.rotate = playerComing.rotate;
+      movement.direction = playerComing.direction;
       player.style.left = `${playerComing.left}px`;
       player.style.top = `${playerComing.top}px`;
       if (playerComing.id === currentPlayer) {
@@ -99,8 +95,6 @@ socket.on("newPlayer", (newPlayer) => {
     li.innerText = newPlayer.nickname + " " + newPlayer.team;
     li.id = newPlayer.id;
     player.id = newPlayer.id;
-    movement.left = newPlayer.left;
-    movement.top = newPlayer.top;
     player.classList.add(newPlayer.team);
     player.style.left = `${newPlayer.left}px`;
     player.style.top = `${newPlayer.top}px`;
@@ -126,54 +120,76 @@ socket.on("playerDisc", (playerToExitId) => {
   });
 });
 
+function setRotation(from, to) {
+  let rotation = 0;
+  if (from === to) return rotation;
+  else if ((from === "left" && to === "right") ||
+    (from === "right" && to === "left") ||
+    (from === "top" && to === "bottom") ||
+    (from === "bottom" && to === "top")
+  ) rotation = 180;
+  else if ((from === "left" && to === "top") ||
+    (from === "top" && to === "right") ||
+    (from === "right" && to === "bottom") ||
+    (from === "bottom" && to === "left")
+  ) rotation = 90;
+  else if ((to === "left" && from === "top") ||
+    (to === "top" && from === "right") ||
+    (to === "right" && from === "bottom") ||
+    (to === "bottom" && from === "left")
+  ) rotation = -90;
+
+  return rotation;
+}
+
 function handleMovement(e) {
-  const playerMoving = Array.from(camp.children).find(
-    (item) => item.id === currentPlayer
-  );
   switch (e.keyCode) {
     case 37:
       if (movement.left - stepDistance < 0) break;
+      movement.rotate += setRotation(movement.direction, "left");
+      movement.direction = "left";
       movement.left -= stepDistance;
-      removeRotates(playerMoving);
-      playerMoving.classList.add("left");
-      movement.rotate = "left";
       break;
     case 38:
       if (movement.top - stepDistance < 0) break;
+      movement.rotate += setRotation(movement.direction, "top");
+      movement.direction = "top";
       movement.top -= stepDistance;
-      removeRotates(playerMoving);
-      playerMoving.classList.add("top");
-      movement.rotate = "top";
       break;
     case 39:
       if (movement.left + stepDistance === 680) break;
+      movement.rotate += setRotation(movement.direction, "right");
+      movement.direction = "right";
       movement.left = movement.left + stepDistance;
-      removeRotates(playerMoving);
-      playerMoving.classList.add("right");
-      movement.rotate = "right";
       break;
     case 40:
       if (movement.top + stepDistance === 320) break;
+      movement.rotate += setRotation(movement.direction, "bottom");
+      movement.direction = "bottom";
       movement.top += stepDistance;
-      removeRotates(playerMoving);
-      playerMoving.classList.add("bottom");
-      movement.rotate = "bottom";
       break;
     default:
       break;
   }
-  if (e.keyCode >= 37 && e.keyCode <= 40) socket.emit("playerMoving", movement);
+  if (e.keyCode >= 37 && e.keyCode <= 40) {
+    socket.emit("playerMoving", movement)
+  };
 }
 
-socket.on("playerMoved", (movement) => {
+socket.on("playerMoved", (playerMovement) => {
   const playerMoving = Array.from(camp.children).find(
-    (item) => item.id === movement.id
+    (item) => item.id === playerMovement.id
   );
-  playerMoving.style.top = movement.top + "px";
-  playerMoving.style.left = movement.left + "px";
-  removeRotates(playerMoving);
-  if (movement) {
-    playerMoving.classList.add(movement.rotate);
+
+  playerMoving.style.top = playerMovement.top + "px";
+  playerMoving.style.left = playerMovement.left + "px";
+  if (playerMovement) {
+    playerMoving.animate([
+      { transform: `rotate(${playerMovement.rotate}deg)` }
+    ], {
+      duration: 100,
+      fill: "forwards"
+    });
   }
 });
 
@@ -190,7 +206,7 @@ socket.on("newMessage", (newMessage) => {
     div.innerText = newMessage.message;
   } else if (newMessage.author === "System") {
     div.classList.add("system-message");
-    div.innerText = newMessage.message;
+    div.innerHTML = newMessage.message;
   } else {
     div.classList.add("other-message");
     div.appendChild(p);

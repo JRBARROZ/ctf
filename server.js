@@ -19,11 +19,11 @@ io.on("connection", (socket) => {
     socket.emit("conn", socket.id);
     if (players.length !== 4) {
       if (players.length % 2 !== 0) {
-        const newPlayer = { id: socket.id, nickname: nickname, team: "blue", top: 160, left: 540 };
+        const newPlayer = { id: socket.id, nickname: nickname, team: "blue", top: 160, left: 540, rotate: 180, direction: "left" };
         players.push(newPlayer);
         io.emit("newPlayer", newPlayer);
       } else {
-        const newPlayer = { id: socket.id, nickname: nickname, team: "red", top: 160, left: 40 };
+        const newPlayer = { id: socket.id, nickname: nickname, team: "red", top: 160, left: 40, rotate: 0, direction: "right" };
         players.push(newPlayer);
         io.emit("newPlayer", newPlayer);
       }
@@ -44,7 +44,7 @@ io.on("connection", (socket) => {
     
     console.log(players.length);
     const messageObject = {
-      message: `O jogador ${leftingField} deixou o campo`,
+      message: `O jogador <b>${leftingField}</b> deixou o campo`,
       author: "System"
     }
     io.emit("newMessage", messageObject);
