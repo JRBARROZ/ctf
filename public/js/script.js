@@ -7,6 +7,7 @@ const activeCounter = document.querySelector("#actives");
 const buttonSend = document.querySelector("#send-message");
 buttonSend.addEventListener("click", handleClick);
 let currentPlayer = "";
+const head = document.querySelector("#Head")
 const nickname = prompt("Digite o nome do jogador");
 //movements
 const movement = {
@@ -182,12 +183,12 @@ socket.on("newMessage", (newMessage) => {
   const p = document.createElement("p");
   const span = document.createElement("span");
 
-  span.innerText = newMessage.message
-  p.innerText = newMessage.author.nickname
+  span.innerText = newMessage.message;
+  p.innerText = newMessage.author.nickname;
   if (newMessage.author.id === sessionStorage.getItem("player")) {
     div.classList.add("my-message");
     div.innerText = newMessage.message;
-  } else if(newMessage.author === "System") {
+  } else if (newMessage.author === "System") {
     div.classList.add("system-message");
     div.innerText = newMessage.message;
   } else {

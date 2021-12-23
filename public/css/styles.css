@@ -180,3 +180,31 @@ form {
 .other-message span {
   font-family: "Maven Pro", sans-serif;
 }
+#Footer{
+  animation: stepAnimation 2s linear infinite;
+}
+#Hands{
+  animation: handAnimation 2s linear infinite;
+}
+@keyframes stepAnimation {
+  0% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(-50px, 0);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}
+@keyframes handAnimation {
+  0% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(-10px, 0);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}
