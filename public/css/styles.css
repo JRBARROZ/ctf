@@ -40,6 +40,21 @@ body {
   border: 1px solid blueviolet;
   margin-top: 2rem;
 }
+.flag {
+  position: absolute;
+  transition: 0.1s ease-in-out;
+  height: 20px;
+  width: 20px;
+}
+
+.flag.blue {
+  background-color: blue;
+}
+
+.flag.red {
+  background-color: red;
+}
+
 .player {
   position: absolute;
   transition: 0.1s ease-in-out;
