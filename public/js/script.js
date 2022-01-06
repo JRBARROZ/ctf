@@ -7,7 +7,7 @@ const activeCounter = document.querySelector("#actives");
 const buttonSend = document.querySelector("#send-message");
 buttonSend.addEventListener("click", handleClick);
 let currentPlayer = "";
-const head = document.querySelector("#Head")
+const head = document.querySelector("#Head");
 const nickname = prompt("Digite o nome do jogador");
 //movements
 const movement = {
@@ -17,17 +17,17 @@ const movement = {
   top: 0,
   left: 0,
   rotate: 0,
-  direction: ""
+  direction: "",
 };
 const blueFlag = {
   top: 180,
-  left: 620
-}
+  left: 620,
+};
 
 const redFlag = {
   top: 180,
-  left: 40
-}
+  left: 40,
+};
 const stepDistance = 20;
 
 function handleClick() {
@@ -93,23 +93,26 @@ socket.on("players", (players, flags) => {
         player.classList.add("current_player");
         li.classList.add("current_player");
       }
-      player.animate([
-        { transform: `rotate(${playerComing.rotate}deg)` }
-      ], {
+      player.animate([{ transform: `rotate(${playerComing.rotate}deg)` }], {
         duration: 100,
-        fill: "forwards"
+        fill: "forwards",
       });
       playersPodium.appendChild(li);
       camp.appendChild(player);
     });
 
     flags.forEach((flagComing) => {
-      const flag = document.createElement("div");
-      flag.id = flagComing.team + '-flag';
+      let flag = "";
+      if (flagComing.team === "blue") {
+        flag = document.querySelector(".blue_flag").cloneNode(true);
+      } else {
+        flag = document.querySelector(".red_flag").cloneNode(true);
+      }
+      flag.id = flagComing.team + "-flag";
       flag.classList.add("flag");
+      flag.style.display = "block";
       flag.classList.add(flagComing.team);
-
-      if (flagComing.team === 'blue') {
+      if (flagComing.team === "blue") {
         flag.style.top = blueFlag.top + "px";
         flag.style.left = blueFlag.left + "px";
       } else {
@@ -118,7 +121,7 @@ socket.on("players", (players, flags) => {
       }
 
       camp.appendChild(flag);
-    })
+    });
   }
 });
 
@@ -134,11 +137,9 @@ socket.on("newPlayer", (newPlayer) => {
     player.style.left = `${newPlayer.left}px`;
     player.style.top = `${newPlayer.top}px`;
     playersPodium.appendChild(li);
-    player.animate([
-      { transform: `rotate(${newPlayer.rotate}deg)` }
-    ], {
+    player.animate([{ transform: `rotate(${newPlayer.rotate}deg)` }], {
       duration: 100,
-      fill: "forwards"
+      fill: "forwards",
     });
     camp.appendChild(player);
     activeCounter.innerText = Array.from(camp.children).length;
@@ -164,21 +165,27 @@ socket.on("playerDisc", (playerToExitId) => {
 function setRotation(from, to) {
   let rotation = 0;
   if (from === to) return rotation;
-  else if ((from === "left" && to === "right") ||
+  else if (
+    (from === "left" && to === "right") ||
     (from === "right" && to === "left") ||
     (from === "top" && to === "bottom") ||
     (from === "bottom" && to === "top")
-  ) rotation = 180;
-  else if ((from === "left" && to === "top") ||
+  )
+    rotation = 180;
+  else if (
+    (from === "left" && to === "top") ||
     (from === "top" && to === "right") ||
     (from === "right" && to === "bottom") ||
     (from === "bottom" && to === "left")
-  ) rotation = 90;
-  else if ((to === "left" && from === "top") ||
+  )
+    rotation = 90;
+  else if (
+    (to === "left" && from === "top") ||
     (to === "top" && from === "right") ||
     (to === "right" && from === "bottom") ||
     (to === "bottom" && from === "left")
-  ) rotation = -90;
+  )
+    rotation = -90;
 
   return rotation;
 }
@@ -214,8 +221,8 @@ function handleMovement(e) {
   }
 
   if (e.keyCode >= 37 && e.keyCode <= 40) {
-    socket.emit("playerMoving", movement)
-  };
+    socket.emit("playerMoving", movement);
+  }
 }
 
 socket.on("playerMoved", (playerMovement) => {
@@ -225,15 +232,24 @@ socket.on("playerMoved", (playerMovement) => {
 
   playerMoving.style.top = playerMovement.top + "px";
   playerMoving.style.left = playerMovement.left + "px";
-  
+
   if (playerMovement.team === "blue") {
     const redFlagEl = document.querySelector("#red-flag");
-    const redFlagTop = parseInt(redFlagEl.style.top.substring(0, redFlagEl.style.top.length - 2));
-    const redFlagLeft = parseInt(redFlagEl.style.left.substring(0, redFlagEl.style.left.length - 2));
+    const redFlagTop = parseInt(
+      redFlagEl.style.top.substring(0, redFlagEl.style.top.length - 2)
+    );
+    const redFlagLeft = parseInt(
+      redFlagEl.style.left.substring(0, redFlagEl.style.left.length - 2)
+    );
     const topDifference = redFlagTop - playerMovement.top;
     const leftDifference = redFlagLeft - playerMovement.left;
 
-    if ((topDifference >= 0 && topDifference <= 40) && (leftDifference >= 0 && leftDifference <= 40)) {
+    if (
+      topDifference >= 0 &&
+      topDifference <= 40 &&
+      leftDifference >= 0 &&
+      leftDifference <= 40
+    ) {
       movement.hasFlag = true;
     }
 
@@ -245,12 +261,21 @@ socket.on("playerMoved", (playerMovement) => {
     }
   } else {
     const blueFlagEl = document.querySelector("#blue-flag");
-    const blueFlagTop = parseInt(blueFlagEl.style.top.substring(0, blueFlagEl.style.top.length - 2));
-    const blueFlagLeft = parseInt(blueFlagEl.style.left.substring(0, blueFlagEl.style.left.length - 2));
+    const blueFlagTop = parseInt(
+      blueFlagEl.style.top.substring(0, blueFlagEl.style.top.length - 2)
+    );
+    const blueFlagLeft = parseInt(
+      blueFlagEl.style.left.substring(0, blueFlagEl.style.left.length - 2)
+    );
     const topDifference = blueFlagTop - playerMovement.top;
     const leftDifference = blueFlagLeft - playerMovement.left;
 
-    if ((topDifference >= 0 && topDifference <= 40) && (leftDifference >= 0 && leftDifference <= 40)) {
+    if (
+      topDifference >= 0 &&
+      topDifference <= 40 &&
+      leftDifference >= 0 &&
+      leftDifference <= 40
+    ) {
       movement.hasFlag = true;
     }
 
@@ -263,12 +288,13 @@ socket.on("playerMoved", (playerMovement) => {
   }
 
   if (playerMovement) {
-    playerMoving.animate([
-      { transform: `rotate(${playerMovement.rotate}deg)` }
-    ], {
-      duration: 100,
-      fill: "forwards"
-    });
+    playerMoving.animate(
+      [{ transform: `rotate(${playerMovement.rotate}deg)` }],
+      {
+        duration: 100,
+        fill: "forwards",
+      }
+    );
   }
 });
 
