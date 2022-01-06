@@ -219,7 +219,6 @@ function handleMovement(e) {
     default:
       break;
   }
-
   if (e.keyCode >= 37 && e.keyCode <= 40) {
     socket.emit("playerMoving", movement);
   }
