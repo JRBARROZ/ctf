@@ -1,212 +1,411 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Document</title>
-  <link rel="stylesheet" href="css/styles.css" />
-</head>
-
-<body>
-  <script src="/socket.io/socket.io.js"></script>
-  <script src="./js/Pool.js"></script>
-  <div class="game">
-    <div id="camp"></div>
-    <div class="playerInteration">
-      <ul class="players" id="players">
-        <h1>
-          Active Players
-          <span style="color: aquamarine" id="actives">0</span>
-        </h1>
-      </ul>
-      <div class="chat">
-        <div class="show-messages" id="chatToShow"></div>
-        <div class="send-messages">
-          <form action="#" onsubmit="document.querySelector('#message').value = '';return false;">
-            <input id="message" />
-            <button id="send-message" type="submit">
-              <svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 0 24 24" width="16px" fill="white">
-                <path d="M0 0h24v24H0V0z" fill="none" />
-                <path
-                  d="M3.4 20.4l17.45-7.48c.81-.35.81-1.49 0-1.84L3.4 3.6c-.66-.29-1.39.2-1.39.91L2 9.12c0 .5.37.93.87.99L17 12 2.87 13.88c-.5.07-.87.5-.87 1l.01 4.61c0 .71.73 1.2 1.39.91z" />
-              </svg>
-            </button>
-          </form>
+  <body>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="./js/Pool.js"></script>
+    <div class="game">
+      <div id="camp"></div>
+      <div class="playerInteration">
+        <ul class="players" id="players">
+          <h1>
+            Active Players
+            <span style="color: aquamarine" id="actives">0</span>
+          </h1>
+        </ul>
+        <div class="chat">
+          <div class="show-messages" id="chatToShow"></div>
+          <div class="send-messages">
+            <form action="#" id="form-chat">
+              <input id="message" />
+              <button id="send-message" type="submit">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  height="16px"
+                  viewBox="0 0 24 24"
+                  width="16px"
+                  fill="white"
+                >
+                  <path d="M0 0h24v24H0V0z" fill="none" />
+                  <path
+                    d="M3.4 20.4l17.45-7.48c.81-.35.81-1.49 0-1.84L3.4 3.6c-.66-.29-1.39.2-1.39.91L2 9.12c0 .5.37.93.87.99L17 12 2.87 13.88c-.5.07-.87.5-.87 1l.01 4.61c0 .71.73 1.2 1.39.91z"
+                  />
+                </svg>
+              </button>
+            </form>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  <!-- blue player -->
-  <svg width="56" height="60" class="blue-player" viewBox="0 0 56 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <g id="Blue Player">
-      <g id="Player">
-        <g id="Footer">
-          <path id="Ellipse 3"
-            d="M45.4321 45.4052C51.2535 45.4052 55.9727 43.5902 55.9727 41.3512C55.9727 39.1122 51.2535 37.2971 45.4321 37.2971C39.6108 37.2971 34.8916 39.1122 34.8916 41.3512C34.8916 43.5902 39.6108 45.4052 45.4321 45.4052Z"
-            fill="#FFD4BC" />
-          <path id="Ellipse 4"
-            d="M45.4321 22.7026C51.2535 22.7026 55.9727 20.8875 55.9727 18.6485C55.9727 16.4095 51.2535 14.5945 45.4321 14.5945C39.6108 14.5945 34.8916 16.4095 34.8916 18.6485C34.8916 20.8875 39.6108 22.7026 45.4321 22.7026Z"
-            fill="#FFD4BC" />
-        </g>
-        <g id="Body">
-          <path id="Rectangle 1"
-            d="M48.6755 30.0001C48.6755 16.5662 37.7851 5.67578 24.3512 5.67578C10.9172 5.67578 0.0268555 16.5662 0.0268555 30.0001C0.0268555 43.4341 10.9172 54.3244 24.3512 54.3244C37.7851 54.3244 48.6755 43.4341 48.6755 30.0001Z"
-            fill="#0E4F51" />
-          <path id="Rectangle 3" d="M21.1079 5.86608L24.7566 5.67578L28.4052 6.03271V19.4596H21.1079V5.86608Z"
-            fill="white" />
-          <path id="Rectangle 4" d="M21.1079 40.7308L24.7566 40.5405L28.4052 40.8974V54.3243H21.1079V40.7308Z"
-            fill="white" />
-          <g id="Hands">
-            <path id="Ellipse 5"
-              d="M24.7568 59.9999C26.3241 59.9999 27.5946 58.7294 27.5946 57.1621C27.5946 55.5948 26.3241 54.3242 24.7568 54.3242C23.1895 54.3242 21.9189 55.5948 21.9189 57.1621C21.9189 58.7294 23.1895 59.9999 24.7568 59.9999Z"
-              fill="#FFD4BC" />
-            <path id="Ellipse 6"
-              d="M24.7568 5.67568C26.3241 5.67568 27.5946 4.40513 27.5946 2.83784C27.5946 1.27054 26.3241 0 24.7568 0C23.1895 0 21.9189 1.27054 21.9189 2.83784C21.9189 4.40513 23.1895 5.67568 24.7568 5.67568Z"
-              fill="#FFD4BC" />
+    <!-- blue player -->
+    <svg
+      width="56"
+      height="60"
+      class="blue-player"
+      style="display: none"
+      viewBox="0 0 56 60"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <g id="Blue Player">
+        <g id="Player">
+          <g id="Footer">
+            <path
+              id="Ellipse 3"
+              d="M45.4321 45.4052C51.2535 45.4052 55.9727 43.5902 55.9727 41.3512C55.9727 39.1122 51.2535 37.2971 45.4321 37.2971C39.6108 37.2971 34.8916 39.1122 34.8916 41.3512C34.8916 43.5902 39.6108 45.4052 45.4321 45.4052Z"
+              fill="#FFD4BC"
+            />
+            <path
+              id="Ellipse 4"
+              d="M45.4321 22.7026C51.2535 22.7026 55.9727 20.8875 55.9727 18.6485C55.9727 16.4095 51.2535 14.5945 45.4321 14.5945C39.6108 14.5945 34.8916 16.4095 34.8916 18.6485C34.8916 20.8875 39.6108 22.7026 45.4321 22.7026Z"
+              fill="#FFD4BC"
+            />
           </g>
-        </g>
-        <g id="Head">
-          <g id="Rectangle 2" filter="url(#filter0_i_128_33)">
-            <path id="Vector"
-              d="M36.5133 30.0001C36.5133 23.2831 31.0681 17.8379 24.3511 17.8379C17.6342 17.8379 12.189 23.2831 12.189 30.0001C12.189 36.717 17.6342 42.1622 24.3511 42.1622C31.0681 42.1622 36.5133 36.717 36.5133 30.0001Z"
-              fill="#FFD4BC" />
+          <g id="Body">
+            <path
+              id="Rectangle 1"
+              d="M48.6755 30.0001C48.6755 16.5662 37.7851 5.67578 24.3512 5.67578C10.9172 5.67578 0.0268555 16.5662 0.0268555 30.0001C0.0268555 43.4341 10.9172 54.3244 24.3512 54.3244C37.7851 54.3244 48.6755 43.4341 48.6755 30.0001Z"
+              fill="#0E4F51"
+            />
+            <path
+              id="Rectangle 3"
+              d="M21.1079 5.86608L24.7566 5.67578L28.4052 6.03271V19.4596H21.1079V5.86608Z"
+              fill="white"
+            />
+            <path
+              id="Rectangle 4"
+              d="M21.1079 40.7308L24.7566 40.5405L28.4052 40.8974V54.3243H21.1079V40.7308Z"
+              fill="white"
+            />
+            <g id="Hands">
+              <path
+                id="Ellipse 5"
+                d="M24.7568 59.9999C26.3241 59.9999 27.5946 58.7294 27.5946 57.1621C27.5946 55.5948 26.3241 54.3242 24.7568 54.3242C23.1895 54.3242 21.9189 55.5948 21.9189 57.1621C21.9189 58.7294 23.1895 59.9999 24.7568 59.9999Z"
+                fill="#FFD4BC"
+              />
+              <path
+                id="Ellipse 6"
+                d="M24.7568 5.67568C26.3241 5.67568 27.5946 4.40513 27.5946 2.83784C27.5946 1.27054 26.3241 0 24.7568 0C23.1895 0 21.9189 1.27054 21.9189 2.83784C21.9189 4.40513 23.1895 5.67568 24.7568 5.67568Z"
+                fill="#FFD4BC"
+              />
+            </g>
           </g>
-          <g id="Eyes">
-            <path id="Ellipse 1"
-              d="M34.8919 34.0542C35.3397 34.0542 35.7027 33.6912 35.7027 33.2434C35.7027 32.7956 35.3397 32.4326 34.8919 32.4326C34.4441 32.4326 34.0811 32.7956 34.0811 33.2434C34.0811 33.6912 34.4441 34.0542 34.8919 34.0542Z"
-              fill="#585858" />
-            <path id="Ellipse 2"
-              d="M34.8919 27.5677C35.3397 27.5677 35.7027 27.2047 35.7027 26.7569C35.7027 26.3091 35.3397 25.946 34.8919 25.946C34.4441 25.946 34.0811 26.3091 34.0811 26.7569C34.0811 27.2047 34.4441 27.5677 34.8919 27.5677Z"
-              fill="#585858" />
-          </g>
-        </g>
-      </g>
-    </g>
-    <defs>
-      <filter id="filter0_i_128_33" x="12.189" y="17.8379" width="24.3242" height="24.3242" filterUnits="userSpaceOnUse"
-        color-interpolation-filters="sRGB">
-        <feFlood flood-opacity="0" result="BackgroundImageFix" />
-        <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
-        <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
-          result="hardAlpha" />
-        <feOffset />
-        <feGaussianBlur stdDeviation="1.62162" />
-        <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
-        <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0" />
-        <feBlend mode="normal" in2="shape" result="effect1_innerShadow_128_33" />
-      </filter>
-    </defs>
-  </svg>
-  <!-- red player -->
-  <svg width="56" height="60" class="red-player" viewBox="0 0 56 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <g id="Red Player">
-      <g id="Player">
-        <g id="Footer">
-          <path id="Ellipse 3"
-            d="M45.4321 45.4052C51.2535 45.4052 55.9727 43.5902 55.9727 41.3512C55.9727 39.1122 51.2535 37.2971 45.4321 37.2971C39.6108 37.2971 34.8916 39.1122 34.8916 41.3512C34.8916 43.5902 39.6108 45.4052 45.4321 45.4052Z"
-            fill="#FFD4BC" />
-          <path id="Ellipse 4"
-            d="M45.4321 22.7026C51.2535 22.7026 55.9727 20.8875 55.9727 18.6485C55.9727 16.4095 51.2535 14.5945 45.4321 14.5945C39.6108 14.5945 34.8916 16.4095 34.8916 18.6485C34.8916 20.8875 39.6108 22.7026 45.4321 22.7026Z"
-            fill="#FFD4BC" />
-        </g>
-        <g id="Body">
-          <path id="Rectangle 1"
-            d="M48.6755 30.0001C48.6755 16.5662 37.7851 5.67578 24.3512 5.67578C10.9172 5.67578 0.0268555 16.5662 0.0268555 30.0001C0.0268555 43.4341 10.9172 54.3244 24.3512 54.3244C37.7851 54.3244 48.6755 43.4341 48.6755 30.0001Z"
-            fill="#FF7979" />
-          <path id="Rectangle 3" d="M21.1079 5.86608L24.7566 5.67578L28.4052 6.03271V19.4596H21.1079V5.86608Z"
-            fill="#444444" />
-          <path id="Rectangle 4" d="M21.1079 40.7308L24.7566 40.5405L28.4052 40.8974V54.3243H21.1079V40.7308Z"
-            fill="#444444" />
-          <g id="Hands">
-            <path id="Ellipse 5"
-              d="M24.7568 59.9999C26.3241 59.9999 27.5946 58.7294 27.5946 57.1621C27.5946 55.5948 26.3241 54.3242 24.7568 54.3242C23.1895 54.3242 21.9189 55.5948 21.9189 57.1621C21.9189 58.7294 23.1895 59.9999 24.7568 59.9999Z"
-              fill="#FFD4BC" />
-            <path id="Ellipse 6"
-              d="M24.7568 5.67568C26.3241 5.67568 27.5946 4.40513 27.5946 2.83784C27.5946 1.27054 26.3241 0 24.7568 0C23.1895 0 21.9189 1.27054 21.9189 2.83784C21.9189 4.40513 23.1895 5.67568 24.7568 5.67568Z"
-              fill="#FFD4BC" />
-          </g>
-        </g>
-        <g id="Head">
-          <g id="Rectangle 2" filter="url(#filter0_i_128_31)">
-            <path id="Vector"
-              d="M36.5133 30.0001C36.5133 23.2831 31.0681 17.8379 24.3511 17.8379C17.6342 17.8379 12.189 23.2831 12.189 30.0001C12.189 36.717 17.6342 42.1622 24.3511 42.1622C31.0681 42.1622 36.5133 36.717 36.5133 30.0001Z"
-              fill="#FFD4BC" />
-          </g>
-        </g>
-        <g id="Head_2">
-          <g id="Rectangle 2_2" filter="url(#filter1_i_128_31)">
-            <path id="Vector_2" d="M37 30C37 22.8203 31.6274 17 25 17V43C31.6274 43 37 37.1797 37 30Z" fill="#454545" />
+          <g id="Head">
+            <g id="Rectangle 2" filter="url(#filter0_i_128_33)">
+              <path
+                id="Vector"
+                d="M36.5133 30.0001C36.5133 23.2831 31.0681 17.8379 24.3511 17.8379C17.6342 17.8379 12.189 23.2831 12.189 30.0001C12.189 36.717 17.6342 42.1622 24.3511 42.1622C31.0681 42.1622 36.5133 36.717 36.5133 30.0001Z"
+                fill="#FFD4BC"
+              />
+            </g>
+            <g id="Eyes">
+              <path
+                id="Ellipse 1"
+                d="M34.8919 34.0542C35.3397 34.0542 35.7027 33.6912 35.7027 33.2434C35.7027 32.7956 35.3397 32.4326 34.8919 32.4326C34.4441 32.4326 34.0811 32.7956 34.0811 33.2434C34.0811 33.6912 34.4441 34.0542 34.8919 34.0542Z"
+                fill="#585858"
+              />
+              <path
+                id="Ellipse 2"
+                d="M34.8919 27.5677C35.3397 27.5677 35.7027 27.2047 35.7027 26.7569C35.7027 26.3091 35.3397 25.946 34.8919 25.946C34.4441 25.946 34.0811 26.3091 34.0811 26.7569C34.0811 27.2047 34.4441 27.5677 34.8919 27.5677Z"
+                fill="#585858"
+              />
+            </g>
           </g>
         </g>
       </g>
-      <rect id="Rectangle 11" x="28.5" y="27.5" width="5" height="5" stroke="white" />
-    </g>
-    <defs>
-      <filter id="filter0_i_128_31" x="12.189" y="17.8379" width="24.3242" height="24.3242" filterUnits="userSpaceOnUse"
-        color-interpolation-filters="sRGB">
-        <feFlood flood-opacity="0" result="BackgroundImageFix" />
-        <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
-        <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
-          result="hardAlpha" />
-        <feOffset />
-        <feGaussianBlur stdDeviation="1.62162" />
-        <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
-        <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0" />
-        <feBlend mode="normal" in2="shape" result="effect1_innerShadow_128_31" />
-      </filter>
-      <filter id="filter1_i_128_31" x="25" y="17" width="12" height="26" filterUnits="userSpaceOnUse"
-        color-interpolation-filters="sRGB">
-        <feFlood flood-opacity="0" result="BackgroundImageFix" />
-        <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
-        <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
-          result="hardAlpha" />
-        <feOffset />
-        <feGaussianBlur stdDeviation="1.62162" />
-        <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
-        <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0" />
-        <feBlend mode="normal" in2="shape" result="effect1_innerShadow_128_31" />
-      </filter>
-    </defs>
-  </svg>
-  <!-- blue flag -->
-  <svg width="24" height="38" class="blue_flag" style="display: none" viewBox="0 0 9 17" fill="none"
-    xmlns="http://www.w3.org/2000/svg">
-    <g id="Blue Flag">
-      <path id="Rectangle 13" d="M7 0H9V17H7V0Z" fill="url(#paint0_linear_115_13)" />
-      <path id="Vector 19" d="M0 3L7 8V0L0 3Z" fill="url(#paint1_linear_115_13)" />
-    </g>
-    <defs>
-      <linearGradient id="paint0_linear_115_13" x1="8" y1="0" x2="8" y2="17" gradientUnits="userSpaceOnUse">
-        <stop stop-color="#FFD2A9" />
-        <stop offset="1" stop-color="#FFBA7A" />
-      </linearGradient>
-      <linearGradient id="paint1_linear_115_13" x1="3.5" y1="0" x2="3.5" y2="8" gradientUnits="userSpaceOnUse">
-        <stop stop-color="#59AFFF" />
-        <stop offset="1" stop-color="#0132B0" />
-      </linearGradient>
-    </defs>
-  </svg>
-  <!-- red flag -->
-  <svg width="24" height="38" viewBox="0 0 9 17" class="red_flag" fill="none" style="display: none"
-    xmlns="http://www.w3.org/2000/svg">
-    <g id="Red Flag">
-      <path id="Rectangle 12" d="M7 0H9V17H7V0Z" fill="url(#paint0_linear_115_14)" />
-      <path id="Vector 18" d="M0 3L7 8V0L0 3Z" fill="url(#paint1_linear_115_14)" />
-    </g>
-    <defs>
-      <linearGradient id="paint0_linear_115_14" x1="8" y1="0" x2="8" y2="17" gradientUnits="userSpaceOnUse">
-        <stop stop-color="#FFD2A9" />
-        <stop offset="1" stop-color="#FFBA7A" />
-      </linearGradient>
-      <linearGradient id="paint1_linear_115_14" x1="3.5" y1="0" x2="3.5" y2="8" gradientUnits="userSpaceOnUse">
-        <stop stop-color="#FF5959" />
-        <stop offset="1" stop-color="#B00101" />
-      </linearGradient>
-    </defs>
-  </svg>
-  <script type="module" src="./js/script.js"></script>
-</body>
-
+      <defs>
+        <filter
+          id="filter0_i_128_33"
+          x="12.189"
+          y="17.8379"
+          width="24.3242"
+          height="24.3242"
+          filterUnits="userSpaceOnUse"
+          color-interpolation-filters="sRGB"
+        >
+          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feBlend
+            mode="normal"
+            in="SourceGraphic"
+            in2="BackgroundImageFix"
+            result="shape"
+          />
+          <feColorMatrix
+            in="SourceAlpha"
+            type="matrix"
+            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+            result="hardAlpha"
+          />
+          <feOffset />
+          <feGaussianBlur stdDeviation="1.62162" />
+          <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
+          <feColorMatrix
+            type="matrix"
+            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"
+          />
+          <feBlend
+            mode="normal"
+            in2="shape"
+            result="effect1_innerShadow_128_33"
+          />
+        </filter>
+      </defs>
+    </svg>
+    <!-- red player -->
+    <svg
+      width="56"
+      height="60"
+      style="display: none"
+      class="red-player"
+      viewBox="0 0 56 60"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <g id="Red Player">
+        <g id="Player">
+          <g id="Footer">
+            <path
+              id="Ellipse 3"
+              d="M45.4321 45.4052C51.2535 45.4052 55.9727 43.5902 55.9727 41.3512C55.9727 39.1122 51.2535 37.2971 45.4321 37.2971C39.6108 37.2971 34.8916 39.1122 34.8916 41.3512C34.8916 43.5902 39.6108 45.4052 45.4321 45.4052Z"
+              fill="#FFD4BC"
+            />
+            <path
+              id="Ellipse 4"
+              d="M45.4321 22.7026C51.2535 22.7026 55.9727 20.8875 55.9727 18.6485C55.9727 16.4095 51.2535 14.5945 45.4321 14.5945C39.6108 14.5945 34.8916 16.4095 34.8916 18.6485C34.8916 20.8875 39.6108 22.7026 45.4321 22.7026Z"
+              fill="#FFD4BC"
+            />
+          </g>
+          <g id="Body">
+            <path
+              id="Rectangle 1"
+              d="M48.6755 30.0001C48.6755 16.5662 37.7851 5.67578 24.3512 5.67578C10.9172 5.67578 0.0268555 16.5662 0.0268555 30.0001C0.0268555 43.4341 10.9172 54.3244 24.3512 54.3244C37.7851 54.3244 48.6755 43.4341 48.6755 30.0001Z"
+              fill="#FF7979"
+            />
+            <path
+              id="Rectangle 3"
+              d="M21.1079 5.86608L24.7566 5.67578L28.4052 6.03271V19.4596H21.1079V5.86608Z"
+              fill="#444444"
+            />
+            <path
+              id="Rectangle 4"
+              d="M21.1079 40.7308L24.7566 40.5405L28.4052 40.8974V54.3243H21.1079V40.7308Z"
+              fill="#444444"
+            />
+            <g id="Hands">
+              <path
+                id="Ellipse 5"
+                d="M24.7568 59.9999C26.3241 59.9999 27.5946 58.7294 27.5946 57.1621C27.5946 55.5948 26.3241 54.3242 24.7568 54.3242C23.1895 54.3242 21.9189 55.5948 21.9189 57.1621C21.9189 58.7294 23.1895 59.9999 24.7568 59.9999Z"
+                fill="#FFD4BC"
+              />
+              <path
+                id="Ellipse 6"
+                d="M24.7568 5.67568C26.3241 5.67568 27.5946 4.40513 27.5946 2.83784C27.5946 1.27054 26.3241 0 24.7568 0C23.1895 0 21.9189 1.27054 21.9189 2.83784C21.9189 4.40513 23.1895 5.67568 24.7568 5.67568Z"
+                fill="#FFD4BC"
+              />
+            </g>
+          </g>
+          <g id="Head">
+            <g id="Rectangle 2" filter="url(#filter0_i_128_31)">
+              <path
+                id="Vector"
+                d="M36.5133 30.0001C36.5133 23.2831 31.0681 17.8379 24.3511 17.8379C17.6342 17.8379 12.189 23.2831 12.189 30.0001C12.189 36.717 17.6342 42.1622 24.3511 42.1622C31.0681 42.1622 36.5133 36.717 36.5133 30.0001Z"
+                fill="#FFD4BC"
+              />
+            </g>
+          </g>
+          <g id="Head_2">
+            <g id="Rectangle 2_2" filter="url(#filter1_i_128_31)">
+              <path
+                id="Vector_2"
+                d="M37 30C37 22.8203 31.6274 17 25 17V43C31.6274 43 37 37.1797 37 30Z"
+                fill="#454545"
+              />
+            </g>
+          </g>
+        </g>
+        <rect
+          id="Rectangle 11"
+          x="28.5"
+          y="27.5"
+          width="5"
+          height="5"
+          stroke="white"
+        />
+      </g>
+      <defs>
+        <filter
+          id="filter0_i_128_31"
+          x="12.189"
+          y="17.8379"
+          width="24.3242"
+          height="24.3242"
+          filterUnits="userSpaceOnUse"
+          color-interpolation-filters="sRGB"
+        >
+          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feBlend
+            mode="normal"
+            in="SourceGraphic"
+            in2="BackgroundImageFix"
+            result="shape"
+          />
+          <feColorMatrix
+            in="SourceAlpha"
+            type="matrix"
+            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+            result="hardAlpha"
+          />
+          <feOffset />
+          <feGaussianBlur stdDeviation="1.62162" />
+          <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
+          <feColorMatrix
+            type="matrix"
+            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"
+          />
+          <feBlend
+            mode="normal"
+            in2="shape"
+            result="effect1_innerShadow_128_31"
+          />
+        </filter>
+        <filter
+          id="filter1_i_128_31"
+          x="25"
+          y="17"
+          width="12"
+          height="26"
+          filterUnits="userSpaceOnUse"
+          color-interpolation-filters="sRGB"
+        >
+          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feBlend
+            mode="normal"
+            in="SourceGraphic"
+            in2="BackgroundImageFix"
+            result="shape"
+          />
+          <feColorMatrix
+            in="SourceAlpha"
+            type="matrix"
+            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+            result="hardAlpha"
+          />
+          <feOffset />
+          <feGaussianBlur stdDeviation="1.62162" />
+          <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
+          <feColorMatrix
+            type="matrix"
+            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"
+          />
+          <feBlend
+            mode="normal"
+            in2="shape"
+            result="effect1_innerShadow_128_31"
+          />
+        </filter>
+      </defs>
+    </svg>
+    <!-- blue flag -->
+    <svg
+      width="24"
+      height="38"
+      class="blue_flag"
+      style="display: none"
+      viewBox="0 0 9 17"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <g id="Blue Flag">
+        <path
+          id="Rectangle 13"
+          d="M7 0H9V17H7V0Z"
+          fill="url(#paint0_linear_115_13)"
+        />
+        <path
+          id="Vector 19"
+          d="M0 3L7 8V0L0 3Z"
+          fill="url(#paint1_linear_115_13)"
+        />
+      </g>
+      <defs>
+        <linearGradient
+          id="paint0_linear_115_13"
+          x1="8"
+          y1="0"
+          x2="8"
+          y2="17"
+          gradientUnits="userSpaceOnUse"
+        >
+          <stop stop-color="#FFD2A9" />
+          <stop offset="1" stop-color="#FFBA7A" />
+        </linearGradient>
+        <linearGradient
+          id="paint1_linear_115_13"
+          x1="3.5"
+          y1="0"
+          x2="3.5"
+          y2="8"
+          gradientUnits="userSpaceOnUse"
+        >
+          <stop stop-color="#59AFFF" />
+          <stop offset="1" stop-color="#0132B0" />
+        </linearGradient>
+      </defs>
+    </svg>
+    <!-- red flag -->
+    <svg
+      width="24"
+      height="38"
+      viewBox="0 0 9 17"
+      class="red_flag"
+      fill="none"
+      style="display: none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <g id="Red Flag">
+        <path
+          id="Rectangle 12"
+          d="M7 0H9V17H7V0Z"
+          fill="url(#paint0_linear_115_14)"
+        />
+        <path
+          id="Vector 18"
+          d="M0 3L7 8V0L0 3Z"
+          fill="url(#paint1_linear_115_14)"
+        />
+      </g>
+      <defs>
+        <linearGradient
+          id="paint0_linear_115_14"
+          x1="8"
+          y1="0"
+          x2="8"
+          y2="17"
+          gradientUnits="userSpaceOnUse"
+        >
+          <stop stop-color="#FFD2A9" />
+          <stop offset="1" stop-color="#FFBA7A" />
+        </linearGradient>
+        <linearGradient
+          id="paint1_linear_115_14"
+          x1="3.5"
+          y1="0"
+          x2="3.5"
+          y2="8"
+          gradientUnits="userSpaceOnUse"
+        >
+          <stop stop-color="#FF5959" />
+          <stop offset="1" stop-color="#B00101" />
+        </linearGradient>
+      </defs>
+    </svg>
+    <script type="module" src="./js/script.js"></script>
+  </body>
 </html>

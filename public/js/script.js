@@ -21,8 +21,8 @@ function playerExists(playerId) {
 }
 
 function animateMovement(player) {
-  player = JSON.parse(player);
-  const playerEl = document.querySelector(`#${player.id}`);
+  const playerEl = document.getElementById(player.id);
+  console.log(playerEl);
   playerEl.animate([{ transform: `rotate(${player.rotate}deg)` }], {
     duration: 100,
     fill: "forwards",
@@ -31,15 +31,18 @@ function animateMovement(player) {
 
 function addPlayer(player) {
   player = JSON.parse(player);
-  
+
   if (playerExists(player.id)) return;
   players.push(player);
-  const plr = player.team === 'red' ? redPlayerSvg.cloneNode(true) : bluePlayerSvg.cloneNode(true);
-  plr.style.display = 'block';
+  const plr =
+    player.team === "red"
+      ? redPlayerSvg.cloneNode(true)
+      : bluePlayerSvg.cloneNode(true);
+  plr.style.display = "block";
   plr.id = player.id;
   plr.style.top = `${player.top}px`;
   plr.style.left = `${player.left}px`;
-  
+
   camp.appendChild(plr);
 
   animateMovement(player);
@@ -47,11 +50,11 @@ function addPlayer(player) {
 
 function updatePosition(player) {
   const current = document.querySelector(`#${player.id}`);
-	current.style.top = `${player.top}px`;
-	current.style.left = `${player.left}px`;
+  current.style.top = `${player.top}px`;
+  current.style.left = `${player.left}px`;
 }
 
-const acceptedMoves = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'];
+const acceptedMoves = ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"];
 
 document.addEventListener("keydown", handleMovement);
 
@@ -61,15 +64,15 @@ socket.on("gameFull", () => {
   alert("Game is full");
 });
 
-socket.on('disconnected', (playerId) => {
+socket.on("disconnected", (playerId) => {
   players = players.filter((player) => player.id !== playerId);
   const playerLeft = document.querySelector(`#${playerId}`);
   camp.removeChild(playerLeft);
 });
 
 socket.on("current", (player) => {
-  addPlayer(player);
-  currentPlayer = players.find((plr) => plr.id === player.id);
+  const playerObject = JSON.parse(player);
+  currentPlayer = players.find((plr) => plr.id === playerObject.id);
 });
 
 socket.on("newPlayerIn", (player) => {
@@ -77,17 +80,34 @@ socket.on("newPlayerIn", (player) => {
 });
 
 socket.on("players", (allPlayers) => {
-  console.log(players);
   allPlayers.map(addPlayer);
 });
 
 socket.on("move", (id, move) => {
   const player = players.find((p) => p.id === id);
-  console.log(id);
   player.update(move);
-})
-
+});
+socket.on("updatePosition", (player) => {
+  const playerObj = JSON.parse(player);
+  updatePosition(playerObj);
+  animateMovement(playerObj);
+});
 function handleMovement(e) {
   if (!acceptedMoves.includes(e.key)) return;
   socket.emit("move", currentPlayer.id, e.key);
 }
+
+// Chat
+const chat = document.querySelector("#form-chat");
+
+chat.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const playerMessage = e.target.message.value;
+  currentPlayer.message = playerMessage;
+  socket.emit("playerMessage", currentPlayer);
+  e.target.message.value = "";
+});
+
+socket.on("chatUpdate", (msg) => {
+  console.log("Chat", msg);
+});

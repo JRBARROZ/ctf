@@ -1,5 +1,5 @@
 module.exports = class Player {
-	constructor(id, top, left, team, name, direction, rotate) {
+	constructor(id, top, left, team, name, direction, rotate, message) {
 		this.id = id;
 		this.top = top;
 		this.left = left;
@@ -8,6 +8,7 @@ module.exports = class Player {
 		this.direction = direction;
 		this.rotate = rotate;
 		this.hasFlag = false;
+		this.message = message
 		this.stepDistance = 20;
 	}
 
@@ -18,12 +19,14 @@ module.exports = class Player {
 			team: this.team,
 			left: this.left,
 			hasFlag: this.hasFlag,
-			rotate: this.rotate
+			rotate: this.rotate,
+			message: this.message
 		}
 		return JSON.stringify(player);
 	}
 
 	move(direction) {
+		console.log(direction)
 		const acceptedMoves = {
 			ArrowUp: () => {
 				if (this.top - this.stepDistance >= 0) {
