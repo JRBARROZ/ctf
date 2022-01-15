@@ -33,9 +33,43 @@
 ::-webkit-scrollbar-thumb:hover {
   background-color: salmon;
 }
+.red-line {
+  height: 100%;
+  position: absolute;
+  left: 150px;
+  border: 3px solid transparent;
+  border-image: 8
+    repeating-linear-gradient(
+      red 0,
+      red 1em,
+      transparent 0,
+      transparent 2em,
+      white 0,
+      white 3em,
+      transparent 0,
+      transparent 4em
+    );
+}
+.blue-line {
+  background-color: transparent;
+  height: 100%;
+  position: absolute;
+  left: 550px;
+  border: 3px solid transparent;
+  border-image: 8
+    repeating-linear-gradient(
+      red 0,
+      red 1em,
+      transparent 0,
+      transparent 2em,
+      white 0,
+      white 3em,
+      transparent 0,
+      transparent 4em
+    );
+}
 h1,
 span {
-
   font-family: "Round Pool", cursive;
   font-size: 1.2rem;
 }
@@ -121,7 +155,7 @@ body {
   list-style-type: none;
 }
 .players h1 {
-  color: tomato;
+  color: salmon;
 }
 .players li.current_player {
   background-color: transparent;
