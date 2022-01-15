@@ -79,8 +79,39 @@ module.exports = class Player {
 		return rotation;
 	}
 
-	checkForPlayerCollision(players, direction) {
-		
+	checkForPlayerCollision(players, direction, flags) {
+		let hasCollision = false;
+		let collidedWith = "";
+
+		players.forEach((player) => {
+			if (player.id !== this.id) {
+				const otherTop = player.top;
+				const otherLeft = player.left;
+
+				const topDifference = Math.abs(this.top - otherTop);
+				const leftDifference = Math.abs(this.left - otherLeft);
+
+				hasCollision = topDifference >= 0 && topDifference <= 20 && leftDifference >= 0 && leftDifference <= 20 ||
+					topDifference >= 0 && topDifference <= 40 && leftDifference >= 0 && leftDifference <= 20  ||
+					topDifference >= 0 && topDifference <= 20 && leftDifference >= 0 && leftDifference <= 40;
+
+				if (hasCollision) {
+					collidedWith = player;
+					return;
+				}
+			}
+		});
+		if (hasCollision) {
+			if (collidedWith?.hasFlag || this.hasFlag) {
+				collidedWith.hasFlag = false;
+				this.hasFlag = false;
+				return true;
+			}
+			direction = direction === "ArrowUp" ? "ArrowDown" : 
+			direction === "ArrowDown" ? "ArrowUp" : 
+			direction === "ArrowLeft" ? "ArrowRight" : "ArrowLeft";
+			this.move(direction, flags);
+		}
 	}
 
 	checkForFlagCollision(flags) {

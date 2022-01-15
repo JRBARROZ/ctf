@@ -13,7 +13,11 @@ const buttonSend = document.querySelector("#send-message");
 const head = document.querySelector("#Head");
 const nickname = prompt("Digite o nome do Jogador : ");
 
+
 if (nickname) {
+  const acceptedMoves = ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"];
+  document.addEventListener("keydown", handleMovement);
+  
   socket.emit("nickname", nickname);
   // buttonSend.addEventListener("click", handleClick);
   let players = [];
@@ -55,11 +59,12 @@ if (nickname) {
 
   function animateMovement(player) {
     const playerEl = document.querySelector(`#p${player.id}`);
-    console.log(playerEl);
     playerEl.animate([{ transform: `rotate(${player.rotate}deg)` }], {
+      duration: 100,
       fill: "forwards",
     });
   }
+
   function addPlayer(player) {
     player = JSON.parse(player);
 
@@ -78,8 +83,6 @@ if (nickname) {
 
     animateMovement(player);
   }
-  const acceptedMoves = ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"];
-  document.addEventListener("keydown", handleMovement);
   // socket.emit("newPlayer", currentPlayer);
   socket.on("gameFull", () => {
     alert("Game is full");
@@ -93,7 +96,6 @@ if (nickname) {
 
   socket.on("current", (player) => {
     const playerObject = JSON.parse(player);
-    console.log(playerObject);
     currentPlayer = players.find((plr) => plr.id === playerObject.id);
   });
 
@@ -105,6 +107,22 @@ if (nickname) {
     allPlayers.map(addPlayer);
   });
 
+  socket.on("resetGame", (allPlayers) => {
+    camp.innerHTML = "";
+    allPlayers.forEach((player) => {
+      const plr =
+        player.team === "red"
+          ? redPlayerSvg.cloneNode(true)
+          : bluePlayerSvg.cloneNode(true);
+      plr.style.display = "block";
+      plr.id = `p${player.id}`;
+      plr.style.top = `${player.top}px`;
+      plr.style.left = `${player.left}px`;
+
+      camp.appendChild(plr);
+    })
+  })
+
   socket.on("move", (id, move) => {
     const player = players.find((p) => p.id === id);
     player.update(move);
@@ -114,6 +132,7 @@ if (nickname) {
     updatePosition(playerObj);
     animateMovement(playerObj);
   });
+
   function handleMovement(e) {
     if (!acceptedMoves.includes(e.key)) return;
     socket.emit("move", currentPlayer.id, e.key);
@@ -125,7 +144,6 @@ if (nickname) {
 
   formChat.addEventListener("submit", (e) => {
     e.preventDefault();
-    console.log(currentPlayer);
     const playerMessage = e.target.message.value;
     currentPlayer.message = playerMessage;
     socket.emit("playerMessage", currentPlayer);
@@ -143,19 +161,17 @@ if (nickname) {
       div.classList.add("system-message");
     } else {
       div.classList.add("other-message");
-      console.log("message", message);
       span.innerText = message.author;
       p.innerText = message.message;
       div.appendChild(span);
       div.appendChild(p);
     }
     chat.appendChild(div);
-    chat.scrollTo(0, chat.scrollHeight);  
+    chat.scrollTo(0, chat.scrollHeight);
   }
 
   socket.on("chatUpdate", (playersMessages) => {
     chat.innerHTML = "";
-    console.log(playersMessages);
     playersMessages.map(addChatMessage);
   });
 }

@@ -84,7 +84,7 @@ body {
 .red-player-with-flag,
 .blue-player-with-flag {
   position: absolute;
-  /* transition: 0.1s ease-in-out; */
+  transition: 0.1s ease-in-out;
 }
 
 .player.red > g > g > rect {

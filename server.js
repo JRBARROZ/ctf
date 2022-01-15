@@ -7,6 +7,7 @@ const httpServer = createServer(app);
 const io = new Server(httpServer, { cors: "*" });
 
 let players = [];
+let initialState = [];
 let playersMessage = [];
 const flags = [
   {
@@ -73,10 +74,9 @@ io.on("connection", (socket) => {
       player.message
     );
     players.push(newPlayer);
-    socket.emit(
-      "players",
-      players.map((pl) => pl.toString())
-    );
+    initialState.push(newPlayer);
+    
+    socket.emit("players", players.map((pl) => pl.toString()));
     socket.emit("current", newPlayer.toString());
     io.emit("newPlayerIn", newPlayer.toString());
 
@@ -90,6 +90,7 @@ io.on("connection", (socket) => {
     socket.on("move", (id, direction) => {
       const player = players.find((plr) => plr.id === id);
       player.move(direction, flags);
+      player.checkForPlayerCollision(players, direction, flags);
       io.emit("updatePosition", player.toString());
     });
 
