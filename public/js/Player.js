@@ -1,8 +1,9 @@
 module.exports = class Player {
-	constructor(id, top, left, name, direction, rotate) {
+	constructor(id, top, left, team, name, direction, rotate) {
 		this.id = id;
 		this.top = top;
 		this.left = left;
+		this.team = team;
 		this.name = name;
 		this.direction = direction;
 		this.rotate = rotate;
@@ -14,6 +15,7 @@ module.exports = class Player {
 		const player = {
 			id: this.id,
 			top: this.top,
+			team: this.team,
 			left: this.left,
 			hasFlag: this.hasFlag,
 			rotate: this.rotate

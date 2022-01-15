@@ -59,7 +59,7 @@ io.on("connection", (socket) => {
     player.rotate = 180;
     player.direction = 'left';
   }
-  const newPlayer = new Player(socket.id, player.top, player.left, player.name, player.direction, player.rotate)
+  const newPlayer = new Player(socket.id, player.top, player.left, player.team, player.name, player.direction, player.rotate)
   players.push(newPlayer);
 
   console.log('players',players);

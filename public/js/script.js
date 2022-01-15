@@ -2,7 +2,8 @@ const socket = io();
 const camp = document.querySelector("#camp");
 const campDimensions = camp.getBoundingClientRect();
 const playersPodium = document.querySelector("#players");
-const playerSvg = document.querySelector(".player");
+const bluePlayerSvg = document.querySelector(".blue-player");
+const redPlayerSvg = document.querySelector(".red-player");
 const activeCounter = document.querySelector("#actives");
 const buttonSend = document.querySelector("#send-message");
 const head = document.querySelector("#Head");
@@ -20,6 +21,7 @@ function playerExists(playerId) {
 }
 
 function animateMovement(player) {
+  player = JSON.parse(player);
   const playerEl = document.querySelector(`#${player.id}`);
   playerEl.animate([{ transform: `rotate(${player.rotate}deg)` }], {
     duration: 100,
@@ -28,11 +30,19 @@ function animateMovement(player) {
 }
 
 function addPlayer(player) {
+  player = JSON.parse(player);
+  
   if (playerExists(player.id)) return;
-  const plr = document.createElement("div");
+  players.push(player);
+  const plr = player.team === 'red' ? redPlayerSvg.cloneNode(true) : bluePlayerSvg.cloneNode(true);
+  plr.style.display = 'block';
   plr.id = player.id;
   plr.style.top = `${player.top}px`;
   plr.style.left = `${player.left}px`;
+  
+  camp.appendChild(plr);
+
+  animateMovement(player);
 }
 
 function updatePosition(player) {
@@ -67,6 +77,7 @@ socket.on("newPlayerIn", (player) => {
 });
 
 socket.on("players", (allPlayers) => {
+  console.log(players);
   allPlayers.map(addPlayer);
 });
 
