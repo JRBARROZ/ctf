@@ -22,11 +22,12 @@ const flags = [
   },
 ];
 
-app.use(express.static(__dirname + "/public"));
+app.use(express.static(__dirname + "/public/"));
+app.use(express.static(__dirname + "/public/assets/"));
 
 app.get("/", (req, res) => {
   console.log(__dirname);
-  return res.sendFile(__dirname + "/index.html");
+  return res.sendFile(__dirname + "/start.html");
 });
 
 // let chatMessages = [];
@@ -75,8 +76,11 @@ io.on("connection", (socket) => {
     );
     players.push(newPlayer);
     initialState.push(newPlayer);
-    
-    socket.emit("players", players.map((pl) => pl.toString()));
+
+    socket.emit(
+      "players",
+      players.map((pl) => pl.toString())
+    );
     socket.emit("current", newPlayer.toString());
     io.emit("newPlayerIn", newPlayer.toString());
 
@@ -100,7 +104,7 @@ io.on("connection", (socket) => {
         author: player.name,
         message: player.message,
       });
-      console.log("playou", playersMessage)
+      console.log("playou", playersMessage);
       io.emit("chatUpdate", playersMessage);
     });
   });
