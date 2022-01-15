@@ -1,4 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Maven+Pro&family=Moo+Lah+Lah&family=Rubik:wght@400;700&display=swap");
+:root {
+  font-size: 125%;
+}
 * {
   margin: 0;
   padding: 0;
@@ -76,7 +79,10 @@ body {
   left: 40px;
 }
 
-.red-player, .blue-player, .red-player-with-flag, .blue-player-with-flag {
+.red-player,
+.blue-player,
+.red-player-with-flag,
+.blue-player-with-flag {
   position: absolute;
   /* transition: 0.1s ease-in-out; */
 }

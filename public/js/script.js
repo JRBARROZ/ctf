@@ -14,12 +14,11 @@ const head = document.querySelector("#Head");
 const nickname = prompt("Digite o nome do Jogador : ");
 
 if (nickname) {
-  
   socket.emit("nickname", nickname);
   // buttonSend.addEventListener("click", handleClick);
   let players = [];
   let currentPlayer;
-  
+
   function updatePosition(player) {
     const current = document.querySelector(`#p${player.id}`);
 
@@ -30,9 +29,10 @@ if (nickname) {
       } else {
         redFlag.style.display = "none";
       }
-      const plr = player.team === "red"
-        ? redPlayerWithFlagSvg.cloneNode(true)
-        : bluePlayerWithFlagSvg.cloneNode(true);
+      const plr =
+        player.team === "red"
+          ? redPlayerWithFlagSvg.cloneNode(true)
+          : bluePlayerWithFlagSvg.cloneNode(true);
       plr.style.display = "block";
       plr.id = `p${player.id}`;
       plr.style.top = `${player.top}px`;
@@ -46,9 +46,7 @@ if (nickname) {
     current.style.top = `${player.top}px`;
     current.style.left = `${player.left}px`;
     animateMovement(player);
-
   }
-
   function playerExists(playerId) {
     const player = players.find((plr) => plr.id === playerId);
     if (player) return true;
@@ -62,7 +60,6 @@ if (nickname) {
       fill: "forwards",
     });
   }
-
   function addPlayer(player) {
     player = JSON.parse(player);
 
@@ -81,13 +78,9 @@ if (nickname) {
 
     animateMovement(player);
   }
-
   const acceptedMoves = ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"];
-
   document.addEventListener("keydown", handleMovement);
-
   // socket.emit("newPlayer", currentPlayer);
-
   socket.on("gameFull", () => {
     alert("Game is full");
   });
@@ -100,7 +93,7 @@ if (nickname) {
 
   socket.on("current", (player) => {
     const playerObject = JSON.parse(player);
-    console.log(playerObject)
+    console.log(playerObject);
     currentPlayer = players.find((plr) => plr.id === playerObject.id);
   });
 
@@ -155,9 +148,9 @@ if (nickname) {
       p.innerText = message.message;
       div.appendChild(span);
       div.appendChild(p);
-
     }
     chat.appendChild(div);
+    chat.scrollTo(0, chat.scrollHeight);  
   }
 
   socket.on("chatUpdate", (playersMessages) => {
@@ -165,6 +158,4 @@ if (nickname) {
     console.log(playersMessages);
     playersMessages.map(addChatMessage);
   });
-
 }
-
