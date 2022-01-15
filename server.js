@@ -1,4 +1,5 @@
 const { Server } = require("socket.io");
+const Player = require('./public/js/Player.js');
 const express = require('express');
 const app = express();
 const { createServer } = require("http");
@@ -17,7 +18,7 @@ const flags = [
     top: 180,
     left: 40
   }
-]
+];
 
 app.use(express.static(__dirname + '/public'));
 
@@ -25,74 +26,60 @@ app.get("/", (req, res) => {
   console.log(__dirname);
   return res.sendFile(__dirname + "/index.html");
 });
-let chatMessages = [];
+
+// let chatMessages = [];
+
 io.on("connection", (socket) => {
-  socket.on("nickname", (nickname) => {
-    socket.emit("conn", socket.id);
-    if (players.length !== 4) {
-      if (players.length % 2 !== 0) {
-        const newPlayer = {
-          id: socket.id,
-          nickname: nickname,
-          hasFlag: false,
-          team: "blue",
-          top: 160,
-          left: 540,
-          rotate: 180,
-          direction: "left"
-        };
-        players.push(newPlayer);
-        io.emit("newPlayer", newPlayer);
-      } else {
-        const newPlayer = {
-          id: socket.id,
-          nickname: nickname,
-          hasFlag: false,
-          team: "red",
-          top: 160,
-          left: 100,
-          rotate: 0,
-          direction: "right"
-        };
-        players.push(newPlayer);
-        io.emit("newPlayer", newPlayer);
-      }
-      io.emit("loadMessages", chatMessages);
-      io.emit("players", players, flags);
-    }
+  if (players.length === 4) {
+    socket.emit('gameFull');
+    return;
+  }
+  const player = {
+    id: socket.id,
+    team: '',
+    top: 0,
+    left: 0,
+    name: '',
+    rotate: 0,
+    direction: '',
+    hasFlag: false
+  };
+  
+  if (players.length%2 === 0) {
+    player.team = 'red';
+    player.name = `player${players.length}`;
+    player.top = 120 + (players.length * 2 * 20);
+    player.left = 80;
+    player.direction = 'right';
+  } else {
+    player.team = 'blue';
+    player.name = `player${players.length}`;
+    player.top = 120 + ((players.length-1) * 2 * 20);
+    player.left = 560;
+    player.rotate = 180;
+    player.direction = 'left';
+  }
+  const newPlayer = new Player(socket.id, player.top, player.left, player.name, player.direction, player.rotate)
+  players.push(newPlayer);
+
+  console.log('players',players);
+  socket.emit("players", players.map(pl => pl.toString()));
+  socket.emit("current", newPlayer.toString());
+  io.emit("newPlayerIn", newPlayer.toString());
+
+  socket.on("disconnect", () => {  
+    let leavingField = players.find((player) => player.id === socket.id);
+    players = players.filter((player) => player.id !== socket.id);
+    console.log('leaving:', leavingField.id);
+    io.emit('disconnected', leavingField.id);
+    io.emit('players', players.map(pl => pl.toString()));
   });
-  socket.on("disconnect", () => {
-    
-    let leavingField = "";
-    players = players.filter((item) => {
-      if (item.id !== socket.id) {
-        return item;
-      } else {
-        leavingField = item.nickname;
-      }
-    });
-    
-    console.log(players.length);
-    const messageObject = {
-      message: `O jogador <b>${leavingField}</b> deixou o campo`,
-      author: "System"
-    }
-    io.emit("newMessage", messageObject);
-    io.emit("playerDisc", socket.id);
-    io.emit("players", players);
+  
+  socket.on("move", (id, direction) => {
+    const player = players.find((plr) => plr.id === id);
+    player.move(direction);
+    io.emit('updatePosition', player.toString());
   });
-  socket.on("playerMoving", (playerMoving) => {
-    io.emit("playerMoved", playerMoving);
-  });
-  socket.on("chatMessage", (message) => {
-    const messageObject = {
-      message: message,
-      author: players.find((player) => player.id === socket.id)
-    }
-    chatMessages.push(messageObject);
-    io.emit("newMessage", messageObject);
-  });
-  io.emit("loadMessages", chatMessages);
 });
 
 httpServer.listen(3000, () => {

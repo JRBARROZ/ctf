@@ -1,50 +1,61 @@
-class Player {
-  constructor(id, top, left, nickname, direction, rotate, stepDistance) {
+module.exports = class Player {
+	constructor(id, top, left, name, direction, rotate) {
 		this.id = id;
 		this.top = top;
 		this.left = left;
-		this.name = nickname;
+		this.name = name;
 		this.direction = direction;
 		this.rotate = rotate;
-		this.stepDistance = stepDistance;
-  }
+		this.hasFlag = false;
+		this.stepDistance = 20;
+	}
 
-	move(key, players) {
+	toString() {
+		const player = {
+			id: this.id,
+			top: this.top,
+			left: this.left,
+			hasFlag: this.hasFlag,
+			rotate: this.rotate
+		}
+		return JSON.stringify(player);
+	}
+
+	move(direction) {
 		const acceptedMoves = {
-			ArrowUp() {
+			ArrowUp: () => {
 				if (this.top - this.stepDistance >= 0) {
 					this.top -= this.stepDistance;
 				}
-				this.rotate += getRotation(this.direction, "up");
+				this.rotate += this.getRotation(this.direction, "up");
 				this.direction = "up";
 			},
-			ArrowDown() {
+			ArrowDown: () => {
 				if (this.top + this.stepDistance <= 320) {
-					this.top -= this.stepDistance;
+					this.top += this.stepDistance;
 				}
-				this.rotate += getRotation(this.direction, "down");
+				this.rotate += this.getRotation(this.direction, "down");
 				this.direction = "down";
 			},
-			ArrowRight() {
+			ArrowRight: () => {
 				if (this.left + this.stepDistance <= 680) {
-					this.left -= this.stepDistance;
+					this.left += this.stepDistance;
 				}
-				this.rotate += getRotation(this.direction, "right");
+				this.rotate += this.getRotation(this.direction, "right");
 				this.direction = "right";
 			},
-			ArrowLeft() {
+			ArrowLeft: () => {
 				if (this.left - this.stepDistance >= 0) {
 					this.left -= this.stepDistance;
 				}
-				this.rotate += getRotation(this.direction, "left");
+				this.rotate += this.getRotation(this.direction, "left");
 				this.direction = "left";
 			},
 		}
 
-		const moveFunction = acceptedMoves[key];
+		const moveFunction = acceptedMoves[direction];
 		if (moveFunction) {
-			if (!checkForPlayerCollision(players, key))
-			moveFunction(players);
+			moveFunction();
 		}
 
 	}

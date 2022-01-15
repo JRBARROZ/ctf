@@ -14,7 +14,7 @@ class Pool {
   }
 
   removePlayer(player) {
-    this.blueTeam.filter((plr) => plr.id !== player.id);
-    this.redTeam.filter((plr) => plr.id !== player.id);
+    this.blueTeam = this.blueTeam.filter((plr) => plr.id !== player.id);
+    this.redTeam = this.redTeam.filter((plr) => plr.id !== player.id);
   }
 }
