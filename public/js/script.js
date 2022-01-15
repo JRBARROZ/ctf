@@ -13,11 +13,10 @@ const buttonSend = document.querySelector("#send-message");
 const head = document.querySelector("#Head");
 const nickname = prompt("Digite o nome do Jogador : ");
 
-
 if (nickname) {
   const acceptedMoves = ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"];
   document.addEventListener("keydown", handleMovement);
-  
+
   socket.emit("nickname", nickname);
   // buttonSend.addEventListener("click", handleClick);
   let players = [];
@@ -82,6 +81,7 @@ if (nickname) {
     camp.appendChild(plr);
 
     animateMovement(player);
+    activeCounter.innerText = players.length;
   }
   // socket.emit("newPlayer", currentPlayer);
   socket.on("gameFull", () => {
@@ -92,6 +92,7 @@ if (nickname) {
     players = players.filter((player) => player.id !== playerId);
     const playerLeft = document.querySelector(`#p${playerId}`);
     camp.removeChild(playerLeft);
+    activeCounter.innerText = players.length;
   });
 
   socket.on("current", (player) => {
@@ -120,8 +121,8 @@ if (nickname) {
       plr.style.left = `${player.left}px`;
 
       camp.appendChild(plr);
-    })
-  })
+    });
+  });
 
   socket.on("move", (id, move) => {
     const player = players.find((p) => p.id === id);

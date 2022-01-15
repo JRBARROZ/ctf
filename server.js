@@ -23,7 +23,6 @@ const flags = [
 ];
 
 app.use(express.static(__dirname + "/public/"));
-app.use(express.static(__dirname + "/public/assets/"));
 
 app.get("/", (req, res) => {
   console.log(__dirname);
