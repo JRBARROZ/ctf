@@ -11,12 +11,12 @@ let playersMessage = [];
 const flags = [
   {
     team: "blue",
-    top: 180,
-    left: 620,
+    top: 140,
+    left: 640,
   },
   {
     team: "red",
-    top: 180,
+    top: 160,
     left: 40,
   },
 ];
@@ -79,20 +79,17 @@ io.on("connection", (socket) => {
     );
     socket.emit("current", newPlayer.toString());
     io.emit("newPlayerIn", newPlayer.toString());
+
     socket.on("disconnect", () => {
       let leavingField = players.find((player) => player.id === socket.id);
       players = players.filter((player) => player.id !== socket.id);
       console.log("leaving:", leavingField.id);
       io.emit("disconnected", leavingField.id);
-      io.emit(
-        "players",
-        players.map((pl) => pl.toString())
-      );
     });
 
     socket.on("move", (id, direction) => {
       const player = players.find((plr) => plr.id === id);
-      player.move(direction);
+      player.move(direction, flags);
       io.emit("updatePosition", player.toString());
     });
 

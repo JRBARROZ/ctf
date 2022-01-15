@@ -1,0 +1,87 @@
+<svg width="56" height="83" viewBox="0 0 56 83" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g id="Red Player">
+      <g id="Player">
+        <g id="Footer">
+          <path id="Ellipse 3"
+            d="M45.4321 68.4052C51.2535 68.4052 55.9727 66.5902 55.9727 64.3512C55.9727 62.1122 51.2535 60.2971 45.4321 60.2971C39.6108 60.2971 34.8916 62.1122 34.8916 64.3512C34.8916 66.5902 39.6108 68.4052 45.4321 68.4052Z"
+            fill="#FFD4BC" />
+          <path id="Ellipse 4"
+            d="M45.4321 45.7026C51.2535 45.7026 55.9727 43.8875 55.9727 41.6485C55.9727 39.4095 51.2535 37.5945 45.4321 37.5945C39.6108 37.5945 34.8916 39.4095 34.8916 41.6485C34.8916 43.8875 39.6108 45.7026 45.4321 45.7026Z"
+            fill="#FFD4BC" />
+        </g>
+        <g id="Body">
+          <path id="Rectangle 1"
+            d="M48.6755 53.0001C48.6755 39.5662 37.7851 28.6758 24.3512 28.6758C10.9172 28.6758 0.0268555 39.5662 0.0268555 53.0001C0.0268555 66.4341 10.9172 77.3244 24.3512 77.3244C37.7851 77.3244 48.6755 66.4341 48.6755 53.0001Z"
+            fill="#FF7979" />
+          <path id="Rectangle 3" d="M21.1079 28.8661L24.7566 28.6758L28.4052 29.0327V42.4596H21.1079V28.8661Z"
+            fill="#444444" />
+          <path id="Rectangle 4" d="M21.1079 63.7308L24.7566 63.5405L28.4052 63.8974V77.3243H21.1079V63.7308Z"
+            fill="#444444" />
+          <g id="Hands">
+            <g id="Blue Flag">
+              <path id="Rectangle 13"
+                d="M40.5142 7.14966L42.5569 9.1924L25.1922 26.5571L23.1494 24.5144L40.5142 7.14966Z"
+                fill="url(#paint0_linear_128_31)" />
+              <path id="Vector 19" d="M30.3004 3.06436L32.3427 15.3212L40.5143 7.14958L30.3004 3.06436Z"
+                fill="url(#paint1_linear_128_31)" />
+            </g>
+            <path id="Ellipse 5"
+              d="M24.7568 82.9999C26.3241 82.9999 27.5946 81.7294 27.5946 80.1621C27.5946 78.5948 26.3241 77.3242 24.7568 77.3242C23.1895 77.3242 21.9189 78.5948 21.9189 80.1621C21.9189 81.7294 23.1895 82.9999 24.7568 82.9999Z"
+              fill="#FFD4BC" />
+            <path id="Ellipse 6"
+              d="M24.7568 28.6757C26.3241 28.6757 27.5946 27.4051 27.5946 25.8378C27.5946 24.2705 26.3241 23 24.7568 23C23.1895 23 21.9189 24.2705 21.9189 25.8378C21.9189 27.4051 23.1895 28.6757 24.7568 28.6757Z"
+              fill="#FFD4BC" />
+          </g>
+        </g>
+        <g id="Head">
+          <g id="Rectangle 2" filter="url(#filter0_i_128_31)">
+            <path id="Vector"
+              d="M36.5133 53.0001C36.5133 46.2831 31.0681 40.8379 24.3511 40.8379C17.6342 40.8379 12.189 46.2831 12.189 53.0001C12.189 59.717 17.6342 65.1622 24.3511 65.1622C31.0681 65.1622 36.5133 59.717 36.5133 53.0001Z"
+              fill="#FFD4BC" />
+          </g>
+        </g>
+        <g id="Head_2">
+          <g id="Rectangle 2_2" filter="url(#filter1_i_128_31)">
+            <path id="Vector_2" d="M37 53C37 45.8203 31.6274 40 25 40V66C31.6274 66 37 60.1797 37 53Z" fill="#454545" />
+          </g>
+        </g>
+      </g>
+      <path id="Rectangle 11" d="M33.6213 53.2427V57.1569L29.7071 53.2427L33.6213 49.3284V53.2427Z" stroke="white" />
+    </g>
+    <defs>
+      <filter id="filter0_i_128_31" x="12.189" y="40.8379" width="24.3242" height="24.3242" filterUnits="userSpaceOnUse"
+        color-interpolation-filters="sRGB">
+        <feFlood flood-opacity="0" result="BackgroundImageFix" />
+        <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
+        <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+          result="hardAlpha" />
+        <feOffset />
+        <feGaussianBlur stdDeviation="1.62162" />
+        <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
+        <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0" />
+        <feBlend mode="normal" in2="shape" result="effect1_innerShadow_128_31" />
+      </filter>
+      <filter id="filter1_i_128_31" x="25" y="40" width="12" height="26" filterUnits="userSpaceOnUse"
+        color-interpolation-filters="sRGB">
+        <feFlood flood-opacity="0" result="BackgroundImageFix" />
+        <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
+        <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+          result="hardAlpha" />
+        <feOffset />
+        <feGaussianBlur stdDeviation="1.62162" />
+        <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
+        <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0" />
+        <feBlend mode="normal" in2="shape" result="effect1_innerShadow_128_31" />
+      </filter>
+      <linearGradient id="paint0_linear_128_31" x1="41.5355" y1="8.17103" x2="24.1708" y2="25.5358"
+        gradientUnits="userSpaceOnUse">
+        <stop stop-color="#FFD2A9" />
+        <stop offset="1" stop-color="#FFBA7A" />
+      </linearGradient>
+      <linearGradient id="paint1_linear_128_31" x1="36.9395" y1="3.57479" x2="28.7679" y2="11.7464"
+        gradientUnits="userSpaceOnUse">
+        <stop stop-color="#0E4F51" />
+        <stop offset="1" stop-color="#00A19C" />
+      </linearGradient>
+    </defs>
+  </svg>

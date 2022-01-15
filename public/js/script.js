@@ -4,15 +4,50 @@ const campDimensions = camp.getBoundingClientRect();
 const playersPodium = document.querySelector("#players");
 const bluePlayerSvg = document.querySelector(".blue-player");
 const redPlayerSvg = document.querySelector(".red-player");
+const bluePlayerWithFlagSvg = document.querySelector(".blue-player-with-flag");
+const redPlayerWithFlagSvg = document.querySelector(".red-player-with-flag");
+const redFlag = document.querySelector(".red_flag");
+const blueFlag = document.querySelector(".blue_flag");
 const activeCounter = document.querySelector("#actives");
 const buttonSend = document.querySelector("#send-message");
 const head = document.querySelector("#Head");
 const nickname = prompt("Digite o nome do Jogador : ");
+
 if (nickname) {
+  
   socket.emit("nickname", nickname);
   // buttonSend.addEventListener("click", handleClick);
   let players = [];
   let currentPlayer;
+  
+  function updatePosition(player) {
+    const current = document.querySelector(`#p${player.id}`);
+
+    if (player.hasFlag) {
+      camp.removeChild(current);
+      if (player.team === "red") {
+        blueFlag.style.display = "none";
+      } else {
+        redFlag.style.display = "none";
+      }
+      const plr = player.team === "red"
+        ? redPlayerWithFlagSvg.cloneNode(true)
+        : bluePlayerWithFlagSvg.cloneNode(true);
+      plr.style.display = "block";
+      plr.id = `p${player.id}`;
+      plr.style.top = `${player.top}px`;
+      plr.style.left = `${player.left}px`;
+
+      camp.appendChild(plr);
+      // animateMovement(player);
+      // return;
+    }
+
+    current.style.top = `${player.top}px`;
+    current.style.left = `${player.left}px`;
+    animateMovement(player);
+
+  }
 
   function playerExists(playerId) {
     const player = players.find((plr) => plr.id === playerId);
@@ -21,10 +56,9 @@ if (nickname) {
   }
 
   function animateMovement(player) {
-    const playerEl = document.getElementById(player.id);
+    const playerEl = document.querySelector(`#p${player.id}`);
     console.log(playerEl);
     playerEl.animate([{ transform: `rotate(${player.rotate}deg)` }], {
-      duration: 100,
       fill: "forwards",
     });
   }
@@ -39,19 +73,13 @@ if (nickname) {
         ? redPlayerSvg.cloneNode(true)
         : bluePlayerSvg.cloneNode(true);
     plr.style.display = "block";
-    plr.id = player.id;
+    plr.id = `p${player.id}`;
     plr.style.top = `${player.top}px`;
     plr.style.left = `${player.left}px`;
 
     camp.appendChild(plr);
 
     animateMovement(player);
-  }
-
-  function updatePosition(player) {
-    const current = document.querySelector(`#${player.id}`);
-    current.style.top = `${player.top}px`;
-    current.style.left = `${player.left}px`;
   }
 
   const acceptedMoves = ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"];
@@ -66,7 +94,7 @@ if (nickname) {
 
   socket.on("disconnected", (playerId) => {
     players = players.filter((player) => player.id !== playerId);
-    const playerLeft = document.querySelector(`#${playerId}`);
+    const playerLeft = document.querySelector(`#p${playerId}`);
     camp.removeChild(playerLeft);
   });
 
@@ -110,6 +138,7 @@ if (nickname) {
     socket.emit("playerMessage", currentPlayer);
     e.target.message.value = "";
   });
+
   function addChatMessage(message) {
     const div = document.createElement("div");
     const p = document.createElement("p");
@@ -130,9 +159,12 @@ if (nickname) {
     }
     chat.appendChild(div);
   }
+
   socket.on("chatUpdate", (playersMessages) => {
     chat.innerHTML = "";
     console.log(playersMessages);
     playersMessages.map(addChatMessage);
   });
+
 }
+

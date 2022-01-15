@@ -26,8 +26,7 @@ module.exports = class Player {
 		return JSON.stringify(player);
 	}
 
-	move(direction) {
-		console.log(direction)
+	move(direction, flags) {
 		const acceptedMoves = {
 			ArrowUp: () => {
 				if (this.top - this.stepDistance >= 0) {
@@ -37,14 +36,14 @@ module.exports = class Player {
 				this.direction = "up";
 			},
 			ArrowDown: () => {
-				if (this.top + this.stepDistance <= 320) {
+				if (this.top + this.stepDistance <= 300) {
 					this.top += this.stepDistance;
 				}
 				this.rotate += this.getRotation(this.direction, "down");
 				this.direction = "down";
 			},
 			ArrowRight: () => {
-				if (this.left + this.stepDistance <= 680) {
+				if (this.left + this.stepDistance <= 660) {
 					this.left += this.stepDistance;
 				}
 				this.rotate += this.getRotation(this.direction, "right");
@@ -62,8 +61,10 @@ module.exports = class Player {
 		const moveFunction = acceptedMoves[direction];
 		if (moveFunction) {
 			moveFunction();
+			if (this.checkForFlagCollision(flags)) {
+				this.hasFlag = true;
+			}
 		}
-
 	}
 
 	getRotation(from, to) {
@@ -80,5 +81,16 @@ module.exports = class Player {
 
 	checkForPlayerCollision(players, direction) {
 		
+	}
+
+	checkForFlagCollision(flags) {
+		const opponentFlag = flags[0].team === this.team ? flags[1] : flags[0];
+		const flagTop = opponentFlag.top;
+		const flagLeft = opponentFlag.left;
+
+		const topDifference = parseInt(flagTop) - this.top;
+		const leftDifference = parseInt(flagLeft) - this.left;
+
+		return topDifference >= 0 && topDifference <= 40 && leftDifference >= 0 && leftDifference <= 40;
 	}
 }

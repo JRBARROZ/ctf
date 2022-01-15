@@ -64,17 +64,21 @@ body {
   display: block;
 }
 
-.flag.blue {
-  /* background-color: blue; */
-}
-
-.flag.red {
-  /* background-color: red; */
-}
-
-.red-player, .blue-player {
+.blue_flag {
   position: absolute;
-  transition: 0.1s ease-in-out;
+  top: 160px;
+  left: 640px;
+}
+
+.red_flag {
+  position: absolute;
+  top: 160px;
+  left: 40px;
+}
+
+.red-player, .blue-player, .red-player-with-flag, .blue-player-with-flag {
+  position: absolute;
+  /* transition: 0.1s ease-in-out; */
 }
 
 .player.red > g > g > rect {
