@@ -1,0 +1,52 @@
+<svg width="61" height="61" viewBox="0 0 61 61" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Red Player">
+<g id="Player">
+<g id="Footer">
+<path id="Ellipse 3" d="M48.7223 46.0215C54.9655 46.0215 60.0267 44.2064 60.0267 41.9674C60.0267 39.7284 54.9655 37.9133 48.7223 37.9133C42.4791 37.9133 37.418 39.7284 37.418 41.9674C37.418 44.2064 42.4791 46.0215 48.7223 46.0215Z" fill="#FFD4BC"/>
+<path id="Ellipse 4" d="M48.7223 23.3186C54.9655 23.3186 60.0267 21.5035 60.0267 19.2645C60.0267 17.0255 54.9655 15.2104 48.7223 15.2104C42.4791 15.2104 37.418 17.0255 37.418 19.2645C37.418 21.5035 42.4791 23.3186 48.7223 23.3186Z" fill="#FFD4BC"/>
+</g>
+<g id="Body">
+<path id="Rectangle 1" d="M52.2008 30.6159C52.2008 17.1819 40.5212 6.2915 26.1138 6.2915C11.7064 6.2915 0.0268555 17.1819 0.0268555 30.6159C0.0268555 44.0499 11.7064 54.9403 26.1138 54.9403C40.5212 54.9403 52.2008 44.0499 52.2008 30.6159Z" fill="#FF7979"/>
+<path id="Rectangle 3" d="M22.6357 6.4818L26.5488 6.2915L30.4618 6.64843V20.0753H22.6357V6.4818Z" fill="#444444"/>
+<path id="Rectangle 4" d="M22.6357 41.3456L26.5488 41.1553L30.4618 41.5122V54.9391H22.6357V41.3456Z" fill="#444444"/>
+<g id="Hands">
+<path id="Ellipse 5" d="M26.5484 60.6159C28.2292 60.6159 29.5918 59.3453 29.5918 57.778C29.5918 56.2107 28.2292 54.9402 26.5484 54.9402C24.8675 54.9402 23.5049 56.2107 23.5049 57.778C23.5049 59.3453 24.8675 60.6159 26.5484 60.6159Z" fill="#FFD4BC"/>
+<path id="Ellipse 6" d="M26.5484 6.29165C28.2292 6.29165 29.5918 5.02111 29.5918 3.45381C29.5918 1.88651 28.2292 0.615967 26.5484 0.615967C24.8675 0.615967 23.5049 1.88651 23.5049 3.45381C23.5049 5.02111 24.8675 6.29165 26.5484 6.29165Z" fill="#FFD4BC"/>
+</g>
+</g>
+<g id="Head">
+<g id="FullHead">
+<g id="Rectangle 2" filter="url(#filter0_i_128_31)">
+<path id="Vector" d="M39.1573 30.6163C39.1573 23.8993 33.3175 18.4541 26.1138 18.4541C18.9101 18.4541 13.0703 23.8993 13.0703 30.6163C13.0703 37.3333 18.9101 42.7785 26.1138 42.7785C33.3175 42.7785 39.1573 37.3333 39.1573 30.6163Z" fill="#FFD4BC"/>
+</g>
+<g id="Rectangle 2_2" filter="url(#filter1_i_128_31)">
+<path id="Vector_2" d="M39.6791 30.6165C39.6791 23.4368 33.9172 17.6165 26.8096 17.6165V43.6165C33.9172 43.6165 39.6791 37.7962 39.6791 30.6165Z" fill="#454545"/>
+<rect id="Rectangle 11" x="30.5269" y="28.1165" width="5.43478" height="5.00001" stroke="white"/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<defs>
+<filter id="filter0_i_128_31" x="13.0703" y="18.4541" width="26.0869" height="24.3245" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset/>
+<feGaussianBlur stdDeviation="1.62162"/>
+<feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/>
+<feBlend mode="normal" in2="shape" result="effect1_innerShadow_128_31"/>
+</filter>
+<filter id="filter1_i_128_31" x="26.8096" y="17.6165" width="12.8696" height="26" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset/>
+<feGaussianBlur stdDeviation="1.62162"/>
+<feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/>
+<feBlend mode="normal" in2="shape" result="effect1_innerShadow_128_31"/>
+</filter>
+</defs>
+</svg>
