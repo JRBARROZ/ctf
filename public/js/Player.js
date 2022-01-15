@@ -20,7 +20,8 @@ module.exports = class Player {
 			left: this.left,
 			hasFlag: this.hasFlag,
 			rotate: this.rotate,
-			message: this.message
+			message: this.message,
+			name: this.name
 		}
 		return JSON.stringify(player);
 	}

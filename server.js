@@ -31,80 +31,80 @@ app.get("/", (req, res) => {
 // let chatMessages = [];
 
 io.on("connection", (socket) => {
-  if (players.length === 4) {
-    socket.emit("gameFull");
-    return;
-  }
-  socket.emit("chatUpdate", playersMessage);
-  const player = {
-    id: socket.id,
-    team: "",
-    top: 0,
-    left: 0,
-    name: "",
-    message: "",
-    rotate: 0,
-    direction: "",
-    hasFlag: false,
-  };
+  socket.on("nickname", (nickname) => {
+    console.log(nickname);
+    if (players.length === 4) {
+      socket.emit("gameFull");
+      return;
+    }
+    socket.emit("chatUpdate", playersMessage);
+    const player = {
+      id: socket.id,
+      team: "",
+      top: 0,
+      left: 0,
+      name: nickname,
+      message: "",
+      rotate: 0,
+      direction: "",
+      hasFlag: false,
+    };
 
-  if (players.length % 2 === 0) {
-    player.team = "red";
-    player.name = `player${players.length}`;
-    player.top = 120 + players.length * 2 * 20;
-    player.left = 80;
-    player.direction = "right";
-  } else {
-    player.team = "blue";
-    player.name = `player${players.length}`;
-    player.top = 120 + (players.length - 1) * 2 * 20;
-    player.left = 560;
-    player.rotate = 180;
-    player.direction = "left";
-  }
-  const newPlayer = new Player(
-    socket.id,
-    player.top,
-    player.left,
-    player.team,
-    player.name,
-    player.direction,
-    player.rotate,
-    player.message
-  );
-  players.push(newPlayer);
-
-  console.log("players", players);
-  socket.emit(
-    "players",
-    players.map((pl) => pl.toString())
-  );
-  socket.emit("current", newPlayer.toString());
-  io.emit("newPlayerIn", newPlayer.toString());
-
-  socket.on("disconnect", () => {
-    let leavingField = players.find((player) => player.id === socket.id);
-    players = players.filter((player) => player.id !== socket.id);
-    console.log("leaving:", leavingField.id);
-    io.emit("disconnected", leavingField.id);
-    io.emit(
+    if (players.length % 2 === 0) {
+      player.team = "red";
+      player.top = 120 + players.length * 2 * 20;
+      player.left = 80;
+      player.direction = "right";
+    } else {
+      player.team = "blue";
+      player.top = 120 + (players.length - 1) * 2 * 20;
+      player.left = 560;
+      player.rotate = 180;
+      player.direction = "left";
+    }
+    const newPlayer = new Player(
+      socket.id,
+      player.top,
+      player.left,
+      player.team,
+      player.name,
+      player.direction,
+      player.rotate,
+      player.message
+    );
+    players.push(newPlayer);
+    socket.emit(
       "players",
       players.map((pl) => pl.toString())
     );
-  });
-
-  socket.on("move", (id, direction) => {
-    const player = players.find((plr) => plr.id === id);
-    player.move(direction);
-    io.emit("updatePosition", player.toString());
-  });
-
-  socket.on("playerMessage", (player) => {
-    playersMessage.push({
-      pid: player.id,
-      message: player.message,
+    socket.emit("current", newPlayer.toString());
+    io.emit("newPlayerIn", newPlayer.toString());
+    socket.on("disconnect", () => {
+      let leavingField = players.find((player) => player.id === socket.id);
+      players = players.filter((player) => player.id !== socket.id);
+      console.log("leaving:", leavingField.id);
+      io.emit("disconnected", leavingField.id);
+      io.emit(
+        "players",
+        players.map((pl) => pl.toString())
+      );
     });
-    socket.emit("chatUpdate", playersMessage);
+
+    socket.on("move", (id, direction) => {
+      const player = players.find((plr) => plr.id === id);
+      player.move(direction);
+      io.emit("updatePosition", player.toString());
+    });
+
+    socket.on("playerMessage", (player) => {
+      playersMessage.push({
+        pid: player.id,
+        author: player.name,
+        message: player.message,
+      });
+      console.log("playou", playersMessage)
+      io.emit("chatUpdate", playersMessage);
+    });
   });
 });
 

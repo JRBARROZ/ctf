@@ -195,12 +195,13 @@ form {
   align-self: flex-end;
   width: 90%;
 }
-.other-message p {
+.other-message span {
+  font-family: "Maven Pro", sans-serif;
   color: #333;
   margin-top: -3px;
   font-size: 0.8em;
 }
-.other-message span {
+.other-message p {
   font-family: "Maven Pro", sans-serif;
 }
 #Footer {
