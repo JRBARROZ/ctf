@@ -104,7 +104,7 @@ io.on("connection", (socket) => {
       player.message
     );
     players.push(newPlayer);
-    initialState.push(newPlayer);
+    initialState.push({...newPlayer});
 
     socket.emit(
       "players",
@@ -122,7 +122,11 @@ io.on("connection", (socket) => {
 
     socket.on("move", (id, direction) => {
       const player = players.find((plr) => plr.id === id);
-      player.move(direction, flags);
+      const result = player.move(direction, flags);
+
+      if (result === "red wins") io.emit("winner", 'red wins');
+      else if (result === "blue wins") io.emit("winner", 'blue wins');
+      
       player.checkForPlayerCollision(players, direction, flags);
       io.emit("updatePosition", player.toString());
     });

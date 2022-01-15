@@ -12,6 +12,7 @@ const activeCounter = document.querySelector("#actives");
 const buttonSend = document.querySelector("#send-message");
 const head = document.querySelector("#Head");
 const nickname = prompt("Digite o nome do Jogador : ");
+var gameOver = false;
 
 if (nickname) {
   const acceptedMoves = ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"];
@@ -22,6 +23,10 @@ if (nickname) {
   let players = [];
   let currentPlayer;
 
+  function gameIsOver() {
+    gameOver = true;
+  }
+  
   function updatePosition(player) {
     const current = document.querySelector(`#p${player.id}`);
 
@@ -89,6 +94,7 @@ if (nickname) {
   });
 
   socket.on("disconnected", (playerId) => {
+    if (gameOver) return;
     players = players.filter((player) => player.id !== playerId);
     const playerLeft = document.querySelector(`#p${playerId}`);
     camp.removeChild(playerLeft);
@@ -108,33 +114,45 @@ if (nickname) {
     allPlayers.map(addPlayer);
   });
 
-  socket.on("resetGame", (allPlayers) => {
-    camp.innerHTML = "";
-    allPlayers.forEach((player) => {
-      const plr =
-        player.team === "red"
-          ? redPlayerSvg.cloneNode(true)
-          : bluePlayerSvg.cloneNode(true);
-      plr.style.display = "block";
-      plr.id = `p${player.id}`;
-      plr.style.top = `${player.top}px`;
-      plr.style.left = `${player.left}px`;
-
-      camp.appendChild(plr);
-    });
+  socket.on('winner', (winner) => {
+    alert(winner);
+    gameIsOver();
+    camp.innerHTML = "Game over";
   });
+
+  // socket.on("resetGame", (allPlayers) => {
+  //   players.forEach((player) => {
+  //     camp.removeChild(document.querySelector(`#p${player.id}`));
+  //   });
+
+  //   allPlayers.forEach((player) => {
+  //     const plr =
+  //       player.team === "red"
+  //         ? redPlayerSvg.cloneNode(true)
+  //         : bluePlayerSvg.cloneNode(true);
+  //     plr.style.display = "block";
+  //     plr.id = `p${player.id}`;
+  //     plr.style.top = `${player.top}px`;
+  //     plr.style.left = `${player.left}px`;
+
+  //     camp.appendChild(plr);
+  //   });
+  // });
 
   socket.on("move", (id, move) => {
     const player = players.find((p) => p.id === id);
     player.update(move);
   });
   socket.on("updatePosition", (player) => {
+    if (gameOver) return;
     const playerObj = JSON.parse(player);
     updatePosition(playerObj);
     animateMovement(playerObj);
   });
 
   function handleMovement(e) {
+    console.log('gameover',gameOver);
+    if (gameOver) return;
     if (!acceptedMoves.includes(e.key)) return;
     socket.emit("move", currentPlayer.id, e.key);
   }

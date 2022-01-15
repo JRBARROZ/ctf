@@ -61,6 +61,17 @@ module.exports = class Player {
     const moveFunction = acceptedMoves[direction];
     if (moveFunction) {
       moveFunction();
+      if (this.hasFlag) {
+        if (this.team === "red") {
+          if (this.left <= 150 - 60) {
+            return "red wins";
+          }
+        } else {
+          if (this.left >= 550) {
+            return "blue wins";
+          }
+        }
+      }
       if (this.checkForFlagCollision(flags)) {
         this.hasFlag = true;
       }
@@ -136,6 +147,7 @@ module.exports = class Player {
           ? "ArrowRight"
           : "ArrowLeft";
       this.move(direction, flags);
+      return false;
     }
   }
 
